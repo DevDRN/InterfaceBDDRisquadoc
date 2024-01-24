@@ -15,6 +15,7 @@
 
   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
 
   <!-- Favicons -->
   <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -112,9 +113,9 @@
     </symbol>
   </svg>
 
-  <div class="container">
-    <header class="d-flex justify-content-center py-3">
-      <div class="btn-group space">
+  <div class="container text-center">
+    <header class="d-flex justify-content-center py-3 row align-items-start">
+      <div class="btn-group col">
         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           Table Labo
         </button>
@@ -123,7 +124,7 @@
           <li><a class="dropdown-item" href="#">Ajouter</a></li>
         </ul>
       </div>
-      <div class="btn-group space">
+      <div class="btn-group col">
         <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           Table Correspondant
         </button>
@@ -132,7 +133,9 @@
           <li><a class="dropdown-item" href="#">Ajouter</a></li>
         </ul>
       </div>
-      <a type="button" class="btn btn-outline-light space" href="#">Gestion utilisateurs</a>
+      <div class="btn-group col">
+        <a type="button" class="btn btn-outline-light space" href="#">Gestion utilisateurs</a>
+      </div>
       <!-- <ul class="nav nav-pills">
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Table Labo</a></li>
         <li class="nav-item"><a href="#" class="nav-link">Table Correspondant</a></li>
@@ -143,17 +146,57 @@
 
   <div class="b-example-divider"></div>
 
+  <div id="search-div" class="container text-center">
+
+  </div>
+
+  <div class="b-example-divider"></div>
+
   <div id="main-div" class="container text-center">
     <p>En développement</p>
+    <div class="row align-items-start">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr class="sticky">
+            <th scope="col">Code Labos</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Code GEF</th>
+            <th scope="col">CP</th>
+            <th scope="col">Ville</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="height: 52px;">
+            <td class="u-table-cell">41</td>
+            <td class="u-table-cell">BAYER</td>
+            <td class="u-table-cell">671E</td>
+            <td class="u-table-cell">59120</td>
+            <td class="u-table-cell">LOOS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript">
-    function tcc(){
+    function tcc() {
       $.ajax({
-        type: "P"
-      })
+        type: "POST",
+        url: "tableCorrespondant.php",
+        data: {
+          call: "tableCorrespondantShow",
+        },
+        dataType: 'TEXT',
+        success: function(response) {
+          $('#main-div').html(response);
+          console.log(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(jqXHR.responseText);
+        }
+      });
 
     }
   </script>

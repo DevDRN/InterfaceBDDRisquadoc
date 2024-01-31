@@ -84,3 +84,13 @@
   top: 0 !important;
   background-color: white !important;
 }
+
+.search{
+  display: inline-block;
+}
+
+.subtitle{
+  vertical-align: middle;
+  justify-content: space-between;
+  color: white;
+}

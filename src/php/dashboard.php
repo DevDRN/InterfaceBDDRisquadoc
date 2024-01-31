@@ -7,9 +7,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
-  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="author" content="DevClownJP">
   <meta name="generator" content="Hugo 0.118.2">
-  <title>Headers · Bootstrap v5.3</title>
+  <title>InterfaceBDDRisquadoc</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -146,14 +146,29 @@
 
   <div class="b-example-divider"></div>
 
-  <div id="search-div" class="container text-center">
+  <div class="container text-center">
+    <p>En développement</p>
+  </div>
 
+  <div class="b-example-divider"></div>
+
+  <div id="search-div" class="container text-center border-bottom">
+    <div class="row d-flex flex-wrap justify-content-center subtitle">
+      <form action="" method="POST">
+        <div class="search">
+          <input id="code_labo" type="text" placeholder="Code Labo">
+        </div>
+        <div class="search">
+          <input id="code_postal" type="text" placeholder="Code Postal">
+        </div>
+      </form>
+    </div>
   </div>
 
   <div class="b-example-divider"></div>
 
   <div id="main-div" class="container text-center">
-    <p>En développement</p>
+
     <div class="row align-items-start">
       <table class="table table-striped mb-0">
         <thead>

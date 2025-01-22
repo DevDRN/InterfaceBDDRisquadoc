@@ -152,14 +152,20 @@
 
   <div class="b-example-divider"></div>
 
-  <div id="search-div" class="container text-center border-bottom">
-    <div class="row d-flex flex-wrap justify-content-center subtitle">
+  <div id="search-div" class="row text-center">
+    <div class="subtitle">
       <form action="" method="POST">
         <div class="search">
           <input id="code_labo" type="text" placeholder="Code Labo">
         </div>
         <div class="search">
-          <input id="code_postal" type="text" placeholder="Code Postal">
+          <button type="button" class="btn btn-outline-light" disabled>ET/OU</button>
+        </div>
+        <div class="search">
+          <input id="code_correspondant" type="text" placeholder="Code Postal">
+        </div>
+        <div class="search">
+          <a class="btn" id="btnSearch" onclick="" href=""><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
       </form>
     </div>
@@ -173,20 +179,18 @@
       <table class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
-            <th scope="col">Code Labos</th>
+            <th scope="col">Code Correspondant</th>
+            <th scope="col">Code Labo</th>
             <th scope="col">Nom</th>
-            <th scope="col">Code GEF</th>
-            <th scope="col">CP</th>
-            <th scope="col">Ville</th>
+            <th scope="col">Prénom</th>
           </tr>
         </thead>
         <tbody>
           <tr style="height: 52px;">
-            <td class="u-table-cell">41</td>
-            <td class="u-table-cell">BAYER</td>
-            <td class="u-table-cell">671E</td>
-            <td class="u-table-cell">59120</td>
-            <td class="u-table-cell">LOOS</td>
+            <td class="u-table-cell">65</td>
+            <td class="u-table-cell">84</td>
+            <td class="u-table-cell">HESSNER</td>
+            <td class="u-table-cell">Thomas</td>
           </tr>
         </tbody>
       </table>
@@ -195,6 +199,7 @@
 
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>
   <script type="text/javascript">
     function tcc() {
       $.ajax({
@@ -212,6 +217,30 @@
           alert(jqXHR.responseText);
         }
       });
+      function searchtcc() {
+        
+        var codeLabo =document.getElementById('code_labo').value;
+        var codeCorrespondant = document.getElementById('code_correspondant').value;
+        localStorage.setItem("cLabo", codeLabo);
+        localStorage.setItem("cCorresp", codeCorrespondant);
+
+        $.ajax({
+          type:"POST",
+          url: "tableCorrespondant.php",
+          data: {
+            call: "searchCorresp",
+            code_labo: codeLabo,
+          },
+          dataType: 'TEXT',
+          success: function(response) {
+            $('#main-div').html(reponse);
+            console.log(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.responseText);
+          }
+        })
+      }
 
     }
   </script>

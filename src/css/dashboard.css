@@ -91,6 +91,7 @@
 
 .subtitle{
   vertical-align: middle;
+  
   justify-content: space-between;
-  color: white;
+  color: rgb(17, 76, 238);
 }

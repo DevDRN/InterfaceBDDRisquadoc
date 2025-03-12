@@ -120,7 +120,7 @@
           Table Labo
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Consulter/Modifier</a></li>
+          <li><a class="dropdown-item" onclick="tlc()" href="#">Consulter/Modifier</a></li>
           <li><a class="dropdown-item" href="#">Ajouter</a></li>
         </ul>
       </div>
@@ -207,6 +207,23 @@
         url: "tableCorrespondant.php",
         data: {
           call: "tableCorrespondantShow",
+        },
+        dataType: 'TEXT',
+        success: function(response) {
+          $('#main-div').html(response);
+          console.log(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(jqXHR.responseText);
+        }
+      });
+
+      function tlc() {
+        $.ajax({
+        type: "POST",
+        url: "tableLabo.php",
+        data: {
+          call: "tableLaboShow",
         },
         dataType: 'TEXT',
         success: function(response) {

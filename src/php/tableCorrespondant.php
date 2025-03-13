@@ -30,11 +30,11 @@ function tableCorrespondantShow()
       <table class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
+            <th scope="col">Titre</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Code Correspondant</th>
             <th scope="col">Code Labo</th>
-            <th scope="col">Nom du Labo</th>
-            <th scope="col">Ville</th>
-            <th scope="col">Code Postal</th>
-            <th scope="col">Pays</th>
           </tr>
         </thead>
         <tbody>';
@@ -43,12 +43,12 @@ function tableCorrespondantShow()
 
         for ($i=0; $i < $nrows; $i++){
 
-          echo '<tr style="height: 52px;">
+          echo '<tr class="tr_tab" style="height: 52px;">
+            <td class="u-table-cell">'.$results["TITRE"][$i].'</td>
+            <td class="u-table-cell">'.$results["NOM"][$i].'</td>
+            <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>
+            <td class="u-table-cell">'.$results["CODE_CORRESP"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
-            <td class="u-table-cell">'.$results["NOM_LABO"][$i].'</td>
-            <td class="u-table-cell">'.$results["VILLE"][$i].'</td>
-            <td class="u-table-cell">'.$results["CP"][$i].'</td>
-            <td class="u-table-cell">'.$results["PAYS"][$i].'</td>
           </tr>';
         }
     }

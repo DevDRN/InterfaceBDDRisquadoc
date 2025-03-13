@@ -140,4 +140,6 @@
     <script src="src\js\main.js"></script>
     <script src="src\js\light.js"></script>
     <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </html>

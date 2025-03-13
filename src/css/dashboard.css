@@ -85,6 +85,12 @@
   background-color: white !important;
 }
 
+.stickyAnalyse{
+  position: sticky !important;
+  top: 0 !important;
+  background-color: white !important;
+}
+
 .search{
   display: inline-block;
 }

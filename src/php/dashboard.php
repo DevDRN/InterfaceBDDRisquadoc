@@ -197,9 +197,16 @@
     </div>
   </div>
 
+  <section>
+    <div id="modal">
+
+    </div>
+  </section>
+
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>
+  <script src="../js/dashboard.js"></script>
   <script type="text/javascript">
     function tcc() {
       $.ajax({
@@ -216,7 +223,7 @@
         error: function(jqXHR, textStatus, errorThrown) {
           alert(jqXHR.responseText);
         }
-      });
+      })};
 
       function tlc() {
         $.ajax({
@@ -233,7 +240,8 @@
         error: function(jqXHR, textStatus, errorThrown) {
           alert(jqXHR.responseText);
         }
-      });
+      })};
+
       function searchtcc() {
         
         var codeLabo =document.getElementById('code_labo').value;
@@ -257,9 +265,12 @@
             alert(jqXHR.responseText);
           }
         })
-      }
+      };
 
-    }
+      $(document).ready(function(){
+        $('.tr_tab')
+      })
+
   </script>
 </body>
 

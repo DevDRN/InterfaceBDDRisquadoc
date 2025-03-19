@@ -26,6 +26,9 @@
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
   <meta name="theme-color" content="#712cf9">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -268,8 +271,19 @@
       };
 
       $(document).ready(function(){
-        $('.tr_tab')
-      })
+        $('#dataCorsp').on("dblclick","tr",function() {
+          let titre = getElementById(titre);
+
+          Swal.fire({
+            titre: "Détails",
+            html:
+              <p><strong> Titre:</strong> ${titre}</p>
+              ,
+              icon: "info",
+              confirmButtonText: "Ok"
+          });
+        });
+      });
 
   </script>
 </body>

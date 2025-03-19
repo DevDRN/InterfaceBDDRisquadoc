@@ -27,7 +27,7 @@ function tableCorrespondantShow()
     $nrows = oci_fetch_all($stid, $results);
 
     echo '<div class="row align-items-start">
-      <table class="table table-striped mb-0">
+      <table id="dataCorsp" class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
             <th scope="col">Titre</th>
@@ -44,7 +44,7 @@ function tableCorrespondantShow()
         for ($i=0; $i < $nrows; $i++){
 
           echo '<tr class="tr_tab" style="height: 52px;">
-            <td class="u-table-cell">'.$results["TITRE"][$i].'</td>
+            <td id="titre" class="u-table-cell">'.$results["TITRE"][$i].'</td>
             <td class="u-table-cell">'.$results["NOM"][$i].'</td>
             <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_CORRESP"][$i].'</td>

@@ -226,10 +226,11 @@
         error: function(jqXHR, textStatus, errorThrown) {
           alert(jqXHR.responseText);
         }
-      })};
+      })
+    };
 
-      function tlc() {
-        $.ajax({
+    function tlc() {
+      $.ajax({
         type: "POST",
         url: "tableLabo.php",
         data: {
@@ -243,48 +244,49 @@
         error: function(jqXHR, textStatus, errorThrown) {
           alert(jqXHR.responseText);
         }
-      })};
+      })
+    };
 
-      function searchtcc() {
-        
-        var codeLabo =document.getElementById('code_labo').value;
-        var codeCorrespondant = document.getElementById('code_correspondant').value;
-        localStorage.setItem("cLabo", codeLabo);
-        localStorage.setItem("cCorresp", codeCorrespondant);
+    function searchtcc() {
 
-        $.ajax({
-          type:"POST",
-          url: "tableCorrespondant.php",
-          data: {
-            call: "searchCorresp",
-            code_labo: codeLabo,
-          },
-          dataType: 'TEXT',
-          success: function(response) {
-            $('#main-div').html(reponse);
-            console.log(response);
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
-          }
-        })
-      };
+      var codeLabo = document.getElementById('code_labo').value;
+      var codeCorrespondant = document.getElementById('code_correspondant').value;
+      localStorage.setItem("cLabo", codeLabo);
+      localStorage.setItem("cCorresp", codeCorrespondant);
 
-      $(document).ready(function(){
-        $('#dataCorsp').on("dblclick","tr",function() {
-          let titre = getElementById(titre);
+      $.ajax({
+        type: "POST",
+        url: "tableCorrespondant.php",
+        data: {
+          call: "searchCorresp",
+          code_labo: codeLabo,
+        },
+        dataType: 'TEXT',
+        success: function(response) {
+          $('#main-div').html(reponse);
+          console.log(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(jqXHR.responseText);
+        }
+      })
+    };
 
-          Swal.fire({
-            titre: "Détails",
-            html:
-              <p><strong> Titre:</strong> ${titre}</p>
-              ,
-              icon: "info",
-              confirmButtonText: "Ok"
+    /*       $(document).ready(function(){
+            $('#dataCorsp').on("dblclick","tr",function() {
+              let titre = getElementById(titre);
+
+              Swal.fire({
+                titre: "Détails",
+                html:
+                  <p><strong> Titre:</strong> ${titre} </p>
+                  ,
+                  icon: "info",
+                  confirmButtonText: "Ok"
+              });
+            });
           });
-        });
-      });
-
+     */
   </script>
 </body>
 

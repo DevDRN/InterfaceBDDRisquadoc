@@ -43,7 +43,7 @@ function tableCorrespondantShow()
 
         for ($i=0; $i < $nrows; $i++){
 
-          echo '<tr class="tr_tab" style="height: 52px;">
+          echo '<tr id="swalCorresp" class="tr_tab" style="height: 52px;">
             <td id="titre" class="u-table-cell">'.$results["TITRE"][$i].'</td>
             <td class="u-table-cell">'.$results["NOM"][$i].'</td>
             <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>

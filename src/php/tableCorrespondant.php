@@ -49,6 +49,7 @@ function tableCorrespondantShow()
             <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_CORRESP"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" onclick="details()"> Details </a></td>
           </tr>';
         }
     }

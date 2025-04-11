@@ -24,10 +24,14 @@
   <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
   <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
   <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
+  <link src="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
   <meta name="theme-color" content="#712cf9">
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../node_modules/jquery/dist/jquery.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 
@@ -137,7 +141,7 @@
         </ul>
       </div>
       <div class="btn-group col">
-        <a type="button" class="btn btn-outline-light space" href="#">Gestion utilisateurs</a>
+        <a type="button" class="btn btn-outline-light space" onclick="testSweet()" href="#">Gestion utilisateurs</a>
       </div>
       <!-- <ul class="nav nav-pills">
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Table Labo</a></li>
@@ -210,7 +214,11 @@
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>
   <script src="../js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+
   <script type="text/javascript">
+  
     function tcc() {
       $.ajax({
         type: "POST",
@@ -272,21 +280,23 @@
       })
     };
 
-    /*       $(document).ready(function(){
-            $('#dataCorsp').on("dblclick","tr",function() {
-              let titre = getElementById(titre);
+    /* function details(){
+        let titre = getElementById(titre);
 
-              Swal.fire({
-                titre: "Détails",
-                html:
-                  <p><strong> Titre:</strong> ${titre} </p>
-                  ,
-                  icon: "info",
-                  confirmButtonText: "Ok"
-              });
-            });
-          });
-     */
+        Swal.fire({
+          titre: "Détails",
+          html:
+            <p> <strong> Titre: </strong> ${titre} </p >
+            <p> <strong> Nom: </strong> ${correspondant} </p >
+            <p> <strong> Prenom: </strong> ${titre} </p >
+            <p> <strong> Code Correspondant: </strong> ${titre} </p >
+            <p> <strong> Code Labo: </strong> ${titre} </p >
+            ,
+          icon: "info",
+          confirmButtonText: "Ok"
+        });
+      }; */
+
   </script>
 </body>
 

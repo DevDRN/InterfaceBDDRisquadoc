@@ -42,6 +42,7 @@ function tableCorrespondantShow()
     if ($nrows > 0 ) {
 
         for ($i=0; $i < $nrows; $i++){
+          $codecorresp=$results["CODE_CORRESP"][$i]+1;
 
           echo '<tr id="swalCorresp" class="tr_tab" style="height: 52px;">
             <td id="titre" class="u-table-cell">'.$results["TITRE"][$i].'</td>
@@ -49,7 +50,7 @@ function tableCorrespondantShow()
             <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_CORRESP"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
-            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" onclick="details()"> Details </a></td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" onclick="details('.$codecorresp.')"> Details </a></td>
           </tr>';
         }
     }

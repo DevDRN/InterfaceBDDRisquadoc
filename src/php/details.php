@@ -102,7 +102,38 @@ if (!$nrows) {
 
     <h1>Détails du correspondant :<?= $results["NOM"][0] ?> <?= $results["PRENOM"][0] ?></h1>
     <table class="table table-bordered">
-
+        <thead>
+            <tr>
+                <th scope="col">Code Correspondant</th>
+                <th scope="col">Code Labo</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $results["CODE_CORRESP"][0] ?></td>
+                <td class="u-table-cell"><?= $results["CODE_LABO"][0] ?></td>
+                <td class="u-table-cell"><?= $results["TITRE"][0] ?></td>
+                <td class="u-table-cell"><?= $results["NOM"][0] ?></td>
+                <td class="u-table-cell"><?= $results["PRENOM"][0] ?></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th scope="col">Telephone mobile</th>
+                <th scope="col">Telephone fixe</th>
+                <th scope="col">Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $results["TEL_MOBILE_CORRESP"][0] ?></td>
+                <td class="u-table-cell"><?= $results["TEL_FIXE_CORRESP"][0] ?></td>
+                <td class="u-table-cell"><?= $results["MAIL_CORRESP"][0] ?></td>
+            </tr>
+        </tbody>
     </table>
     
     <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>

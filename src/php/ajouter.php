@@ -255,3 +255,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
 </body>
+
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>
+<script src="../js/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>

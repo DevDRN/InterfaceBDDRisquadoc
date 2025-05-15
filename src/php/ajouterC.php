@@ -252,6 +252,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     value="<?=htmlspecialchars($_POST['email'] ?? '') ?>">
         </div>
 
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="dashboard.php" class="btn btn-secondary">Retour à la liste</a>
     </form>
 
 </body>
@@ -262,3 +264,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../js/dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+
+</html>

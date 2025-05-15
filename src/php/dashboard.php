@@ -137,7 +137,7 @@
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" onclick="tcc()" href="#">Consulter</a></li>
-          <li><a class="dropdown-item" href="#">Ajouter</a></li>
+          <li><a class="dropdown-item" href="ajouterC.php">Ajouter</a></li>
         </ul>
       </div>
       <div class="btn-group col">
@@ -151,6 +151,7 @@
     </header>
   </div>
 
+    <!-- Module de recherche -->
   <div class="b-example-divider"></div>
 
   <div class="container text-center">

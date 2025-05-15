@@ -220,7 +220,7 @@ if (!$nrows) {
             </tr>
         </tbody>
     </table>
-    
+    <a href="modifierC.php?id=<?=urlencode($results["CODE_CORRESP"][0])?>" class="btn btn-warning">Modifier</a>
     <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>
 
 </body>

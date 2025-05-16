@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </div>
   <?php endif; ?>
 
-  {# Formulaire de mise à jour #}
+  <!-- Formulaire de mise à jour -->
   <form method="post" novalidate class="mb-4">
     <div class="mb-3">
       <label for="codeCorresp" class="form-label">Code Correspondant *</label>
@@ -306,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     <a href="dashboard.php" class="btn btn-secondary">Annuler</a>
   </form>
 
-  {# Formulaire de suppression #}
+  <!-- Formulaire de suppression -->
   <form method="post" onsubmit="return confirmDeletion();">
     <button type="submit" name="delete" class="btn btn-danger">Supprimer ce correspondant ?</button>
   </form>

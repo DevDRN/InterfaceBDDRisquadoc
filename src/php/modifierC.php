@@ -252,7 +252,64 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </symbol>
   </svg>
 
-    <h1>Modifier / Supprimer le correspondant <?= htmlspecialchars((string)$nom) ?> <?= htmlspecialchars((string)$prenom) ?></h1>
+  <h1>Modifier / Supprimer le correspondant <?= htmlspecialchars((string)$nom) ?> <?= htmlspecialchars((string)$prenom) ?></h1>
+
+  <?php if ($success): ?>
+    <div class="alert alert-success"><?= $success ?></div>
+  <?php endif; ?>
+
+  <?php if (!empty($erreurs)): ?>
+    <div class="alert alert-danger">
+      <ul>
+        <?php foreach ($erreurs as $e): ?>
+          <li><?=htmlspecialchars($e) ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
+
+  {# Formulaire de mise à jour #}
+  <form method="post" novalidate class="mb-4">
+    <div class="mb-3">
+      <label for="codeCorresp" class="form-label">Code Correspondant *</label>
+      <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required value="<?= htmlspecialchars($codeCorresp ?? '') ?>">
+    </div>
+        <div class="mb-3">
+      <label for="codeLabo" class="form-label">Code Labo *</label>
+      <input type="text" class="form-control" id="codeLabo" name="codeLabo" required value="<?= htmlspecialchars($codeLabo ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="titre" class="form-label">Titre (Mr ou Mme)</label>
+      <input type="text" class="form-control" id="titre" name="titre" value="<?= htmlspecialchars($titre ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom *</label>
+      <input type="text" class="form-control" id="nom" name="nom" required value="<?= htmlspecialchars($nom ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="prenom" class="form-label">Prenom</label>
+      <input type="text" class="form-control" id="prenom" name="prenom" value="<?= htmlspecialchars($prenom ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="telMobile" class="form-label">Telephone mobile du correspondant(*si pas de fixe)</label>
+      <input type="text" class="form-control" id="telMobile" name="telMobile" value="<?= htmlspecialchars($telMobile ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="telFixe" class="form-label">Telephone fixe du correspondant(*si pas de mobile)</label>
+      <input type="text" class="form-control" id="telFixe" name="telFixe" value="<?= htmlspecialchars($telFixe ?? '') ?>">
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email du correspondant *</label>
+      <input type="email" class="form-control" id="email" name="codeCoremailesp" required value="<?= htmlspecialchars($email ?? '') ?>">
+    </div>
+    <button type="submit" name="update" class="btn btn-primary">Enregistrer les modifications</button>
+    <a href="dashboard.php" class="btn btn-secondary">Annuler</a>
+  </form>
+
+  {# Formulaire de suppression #}
+  <form method="post" onsubmit="return confirmDeletion();">
+    <button type="submit" name="delete" class="btn btn-danger">Supprimer ce correspondant ?</button>
+  </form>
 
 <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
@@ -263,5 +320,4 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
 <script src="../js/main.js"></script>
 
 </body>
-
 </html>

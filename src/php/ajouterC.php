@@ -213,12 +213,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" novalidate>
         <div class="mb-3">
             <label for="codeCorresp" class="form-label">Code Correspondant *</label>
-            <input type="number" class="form-control" id="codeCorresp" name="codeCorresp" required
+            <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required
                     value="<?=htmlspecialchars($_POST['codeCorresp'] ?? '') ?>">
         </div>
         <div class="mb-3">
             <label for="codeLabo" class="form-label">Code Labo *</label>
-            <input type="number" class="form-control" id="codeLabo" name="codeLabo" required
+            <input type="text" class="form-control" id="codeLabo" name="codeLabo" required
                     value="<?=htmlspecialchars($_POST['codeLabo'] ?? '') ?>">
         </div>
         <div class="mb-3">

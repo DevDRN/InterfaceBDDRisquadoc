@@ -89,15 +89,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         oci_bind_by_name($stmtUpd, ':email', $email);
 
         $okUpd = oci_execute($stmtUpd, OCI_COMMIT_ON_SUCCESS);
-        oci_free_statement($stmtUpd);
 
         if($okUpd) {
             $success ='Le correspondant a été mis à jour avec succès.';
         } else {
             $e = oci_error($stmtUpd);
             $erreurs[] = 'Erreur lors de la mise à jour: '. htmlentities($e['message'],ENT_QUOTES);
-
         }
+        
+        oci_free_statement($stmtUpd);
+
     }
 }
 

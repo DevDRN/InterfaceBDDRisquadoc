@@ -38,7 +38,7 @@ if(!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
     exit;
 }
 $id=(int)$_GET['id'];
-var_dump($id );
+
 
 $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
 
@@ -47,7 +47,7 @@ if (!$conn) {
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 $req = "select * from CORRESPONDANTS where code_corresp = ".$id."" ;
-var_dump($req);
+
 
 $stid = oci_parse($conn, $req);
 oci_execute($stid);

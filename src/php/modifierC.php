@@ -17,7 +17,6 @@ if (!$id || !ctype_digit($id)) {
     die('Identifiant Invalide.');
 }
 $id = (int) $id;
-var_dump($id);
 
 //Traitement de suppression
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
@@ -75,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
                         PRENOM = :prenom,
                         TEL_MOBILE_CORRESP = :telMobile,
                         TEL_FIXE_CORRESP = :telFixe,
-                        MAIL_CORRESP = :email;";
+                        MAIL_CORRESP = :email";
 
         $stmtUpd = oci_parse($conn,$sqlUpd);
 

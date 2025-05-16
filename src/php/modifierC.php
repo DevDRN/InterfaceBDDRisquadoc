@@ -67,14 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
     if (empty($erreurs)) {
         $sqlUpd = "UPDATE CORRESPONDANTS
-                    SET CODE_CORRESP = :codeCorresp,
-                        CODE_LABO = :codeLabo,
+                    SET CODE_LABO = :codeLabo,
                         TITRE = :titre,
                         NOM = :nom,
                         PRENOM = :prenom,
                         TEL_MOBILE_CORRESP = :telMobile,
                         TEL_FIXE_CORRESP = :telFixe,
-                        MAIL_CORRESP = :email";
+                        MAIL_CORRESP = :email
+                        WHERE CODE_CORRESP = :codeCorresp";
 
         $stmtUpd = oci_parse($conn,$sqlUpd);
 

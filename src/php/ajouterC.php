@@ -11,6 +11,7 @@ if (!$conn) {
 }
 
 //Traitement du formulaire en POST
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Recup et nettoyage
     $codeCorresp = trim($_POST['codeCorresp'] ?? '');
@@ -59,7 +60,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         //execution et commit
         $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
 
-        if ($ok) {
+
+        //Verification de la PK Code_Corresp
+        $checkSql = "SELECT COUNT(*) AS CNT FROM CORRESPONDANTS WHERE CODE_CORRESP = :codeCorresp";
+        $checkST = oci_parse($conn, $checkSql);
+        oci_bind_by_name($checkST, ':codeCorresp', $codeCorresp);
+        oci_execute($checkST0);
+        $checkrow = oci_fetch_assoc($checkST);
+        if ($checkrow['CNT'] > 0){
+            $erreurs[] = "Le code correspondant << {$codeCorresp} >> existe déjà.";
+        }else if ($ok && $checkrow === 0 ) {
             $success = true;
         } else {
             $err = oci_error($stid);

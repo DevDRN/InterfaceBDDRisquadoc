@@ -66,7 +66,13 @@ var_dump($reqLab);
 $stidLab = oci_parse($conn, $reqLab);
 oci_execute($stidLab);
 $nrowsLab = oci_fetch_all($stidLab, $resultsLab);
-var_dump($nrowsLab);
+var_dump($resultsLab);
+
+if (!$nrowsLab) {
+    echo '<p>Aucun labo associer.</p>';
+    exit;
+}
+
 
 ?>
 

@@ -69,8 +69,7 @@ $nrowsLab = oci_fetch_all($stidLab, $resultsLab);
 var_dump($resultsLab);
 
 if (!$nrowsLab) {
-    echo '<p>Aucun labo associer.</p>';
-    exit;
+$erreurLab[] = "Aucun labo associer.";
 }
 
 
@@ -199,7 +198,15 @@ if (!$nrowsLab) {
     </symbol>
   </svg>
 
-
+<?php if(!empty($erreurLab)): ?>
+        <div class="alert alert-danger">
+            <ul>
+                <?php foreach($erreurs as $e): ?>
+                    <li><?=htmlspecialchars($e)?></li>
+                    <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
     <h1>Détails du correspondant :<?= $results["NOM"][0] ?> <?= $results["PRENOM"][0] ?></h1>
     <table class="table table-bordered">
         <thead>
@@ -242,5 +249,6 @@ if (!$nrowsLab) {
 </html>
 <?php
 oci_free_statement($stid);
+oci_free_statement($stidLab);
 oci_close($conn);
 ?>

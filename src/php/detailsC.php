@@ -59,7 +59,14 @@ if (!$nrows) {
     exit;
 }
 $codeLab = $results["CODE_LABO"][0];
-var_dump($codeLab);
+
+$reqLab = "select * from LABOS where CODE_LABO = ".$codeLab."";
+
+$stidLab = oci_parse($conn, $reqLab);
+oci_execute($stidLab);
+$nrowsLab = oci_fetch_all($stidLab, $resultsLab);
+var_dump($nrowsLab);
+
 ?>
 
 <!doctype html>

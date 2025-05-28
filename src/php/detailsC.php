@@ -269,33 +269,53 @@ $erreurLab[] = "Aucun labo associer.";
                 <th scope="col">Ville</th>
                 <th scope="col">Region</th>
                 <th scope="col">Pays</th>
-                <th scope="col">Region</th>
-                <th scope="col">Pays</th>
+                <th scope="col">Telephone</th>
+                <th scope="col">Fax</th>
             </tr>
         </thead>
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $resultsLab["VILLE"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["REGION"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["PAYS"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["TEL_GENERIQUE"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["FAX_GENERIQUE"][0] ?></td>
+            </tr>
+        </tbody>
 
         <thead>
             <tr>
-                <th scope="col">Telephone</th>
-                <th scope="col">Fax</th>
                 <th scope="col">Mail 1</th>
                 <th scope="col">Mail 2</th>
                 <th scope="col">Mail 3</th>
             </tr>
         </thead>
-
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $resultsLab["MAIL_GENE_1"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["MAIL_GENE_2"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["MAIL_GENE_3"][0] ?></td>
+            </tr>
+        </tbody>
         <thead>
             <tr>
                 <th scope="col">Derniere mise à jour</th>
                 <th scope="col">Commentaire</th>
             </tr>
         </thead>
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $resultsLab["DATE_MAJ"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["COMMENTAIRE"][0] ?></td>
+            </tr>
+        </tbody>
 
 
 
+<div class="sticky-bottom">
     <a href="modifierC.php?id=<?=urlencode($results["CODE_CORRESP"][0])?>" class="btn btn-warning">Modifier</a>
     <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>
-
+</div>
 </body>
 </html>
 <?php

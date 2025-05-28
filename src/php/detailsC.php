@@ -313,10 +313,12 @@ $erreurLab[] = "Aucun labo associer.";
 
 
 <div class="sticky-bottom">
-    <a href="modifierC.php?id=<?=urlencode($results["CODE_CORRESP"][0])?>" class="btn btn-warning">Modifier</a>
-    <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>
 </div>
 </body>
+<footer>
+    <a href="modifierC.php?id=<?=urlencode($results["CODE_CORRESP"][0])?>" class="btn btn-warning">Modifier</a>
+    <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>
+</footer>
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>

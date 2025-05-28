@@ -201,7 +201,7 @@ $erreurLab[] = "Aucun labo associer.";
 <?php if(!empty($erreurLab)): ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach($erreurs as $e): ?>
+                <?php foreach($erreurLab as $e): ?>
                     <li><?=htmlspecialchars($e)?></li>
                     <?php endforeach; ?>
             </ul>

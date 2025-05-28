@@ -66,6 +66,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkrow = oci_fetch_assoc($checkST);
         if ($checkrow['CNT'] > 0){
             $erreurs[] = "Le code correspondant << {$codeCorresp} >> existe déjà.";
+            die;
         }
                     //execution et commit
         $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);

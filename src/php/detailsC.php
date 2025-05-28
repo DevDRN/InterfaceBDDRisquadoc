@@ -52,13 +52,14 @@ $req = "select * from CORRESPONDANTS where code_corresp = ".$id."" ;
 $stid = oci_parse($conn, $req);
 oci_execute($stid);
 $nrows = oci_fetch_all($stid, $results);
-var_dump($results);
+// var_dump($results);
 
 if (!$nrows) {
     echo '<p>Correspondant non trouvé.</p>';
     exit;
 }
-
+$codeLab = $results["CODE_LABO"][0];
+var_dump($codeLab);
 ?>
 
 <!doctype html>

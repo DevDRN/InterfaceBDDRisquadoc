@@ -199,14 +199,15 @@ $erreurLab[] = "Aucun labo associer.";
   </svg>
 
 <?php if(!empty($erreurLab)): ?>
-        <div class="alert alert-danger">
-            <ul>
-                <?php foreach($erreurLab as $e): ?>
-                    <li><?=htmlspecialchars($e)?></li>
-                    <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+    <div class="alert alert-danger">
+        <ul>
+            <?php foreach($erreurLab as $e): ?>
+                <li><?=htmlspecialchars($e)?></li>
+                <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
     <h1>Détails du correspondant :<?= $results["NOM"][0] ?> <?= $results["PRENOM"][0] ?></h1>
     <table class="table table-bordered">
         <thead>
@@ -242,6 +243,56 @@ $erreurLab[] = "Aucun labo associer.";
             </tr>
         </tbody>
     </table>
+
+        <h2>Laboratoire associé : </h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Code Labo</th>
+                <th scope="col">Nom Labo</th>
+                <th scope="col">Code GEF</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Code postal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="height: 52px;">
+                <td class="u-table-cell"><?= $resultsLab["CODE_LABO"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["NOM_LABO"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["CODE_GEF"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["ADRESSE"][0] ?></td>
+                <td class="u-table-cell"><?= $resultsLab["CP"][0] ?></td>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <th scope="col">Ville</th>
+                <th scope="col">Region</th>
+                <th scope="col">Pays</th>
+                <th scope="col">Region</th>
+                <th scope="col">Pays</th>
+            </tr>
+        </thead>
+
+        <thead>
+            <tr>
+                <th scope="col">Telephone</th>
+                <th scope="col">Fax</th>
+                <th scope="col">Mail 1</th>
+                <th scope="col">Mail 2</th>
+                <th scope="col">Mail 3</th>
+            </tr>
+        </thead>
+
+        <thead>
+            <tr>
+                <th scope="col">Derniere mise à jour</th>
+                <th scope="col">Commentaire</th>
+            </tr>
+        </thead>
+
+
+
     <a href="modifierC.php?id=<?=urlencode($results["CODE_CORRESP"][0])?>" class="btn btn-warning">Modifier</a>
     <a href="dashboard.php" class="btn btn-secondary">Retour à liste</a>
 

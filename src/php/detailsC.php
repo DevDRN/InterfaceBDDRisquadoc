@@ -207,7 +207,7 @@ $erreurLab[] = "Aucun labo associer.";
         </ul>
     </div>
 <?php endif; ?>
-
+<div>
     <h1>Détails du correspondant :<?= $results["NOM"][0] ?> <?= $results["PRENOM"][0] ?></h1>
     <table class="table table-bordered">
         <thead>
@@ -309,7 +309,7 @@ $erreurLab[] = "Aucun labo associer.";
                 <td class="u-table-cell"><?= $resultsLab["COMMENTAIRE"][0] ?></td>
             </tr>
         </tbody>
-
+</div>
 
 
 <div class="sticky-bottom">

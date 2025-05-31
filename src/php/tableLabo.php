@@ -49,6 +49,7 @@ function tableLaboShow()
             <td class="u-table-cell">'.$results["VILLE"][$i].'</td>
             <td class="u-table-cell">'.$results["CP"][$i].'</td>
             <td class="u-table-cell">'.$results["PAYS"][$i].'</td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]),'"> Details </a></td>
           </tr>';
         }
     }

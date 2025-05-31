@@ -128,7 +128,7 @@
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" onclick="tlc()" href="#">Consulter/Modifier</a></li>
-          <li><a class="dropdown-item" href="#">Ajouter</a></li>
+          <li><a class="dropdown-item" href="ajouterL.php">Ajouter</a></li>
         </ul>
       </div>
       <div class="btn-group col">

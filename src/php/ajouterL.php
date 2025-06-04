@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 $erreurs = [];
 $success = false;
@@ -12,7 +13,7 @@ if (!$conn) {
 
 //Traitement du formulaire en POST
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Recup et nettoyage
     $codeLabo = trim($_POST['codeLabo'] ?? '');
     $nomLabo = trim($_POST['nomLabo'] ?? '');
@@ -58,50 +59,56 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($telGenerique === '' && $faxGenerique === '') {
         $erreurs[] = 'un numéro de télephone ou un numéro de fax sont requis ';
     }
-    if (($mailGenA !== '' && !filter_var($mailGenA, FILTER_VALIDATE_EMAIL)) || ($mailGenB !== '' && !filter_var($mailGenB, FILTER_VALIDATE_EMAIL)) || ($mailGenC !== '' && !filter_var($mailGenC, FILTER_VALIDATE_EMAIL)) ) {
+    if (($mailGenA !== '' && !filter_var($mailGenA, FILTER_VALIDATE_EMAIL)) || ($mailGenB !== '' && !filter_var($mailGenB, FILTER_VALIDATE_EMAIL)) || ($mailGenC !== '' && !filter_var($mailGenC, FILTER_VALIDATE_EMAIL))) {
         $erreurs[] = 'L\'email est invalide et/ou au moins une adresse mail est requise.';
     }
 
     if (empty($erreurs)) {
         //preparation de la requete
         $sql = "INSERT INTO LABOS (CODE_LABO, NOM_LABO, CODE_GEF, ADRESSE, CP, VILLE, REGION, PAYS, TEL_GENERIQUE, FAX_GENERIQUE, MAIL_GENE_1, MAIL_GENE_2, MAIL_GENE_3, DATE_MAJ, COMMENTAIRE)
-                VALUES (:codeCorresp, :codeLabo, :titre, :nom, :prenom, :telMobile, :telFixe, :email)";
+                VALUES (:codeLabo, :nomLabo, :codeGef, :adresse, :codePostal, :ville, :region, :pays, :telGenerique, :faxGenerique, :mailGenA, :mailGenB, :mailGenC, :dateMaj, :commentaire)";
 
-        $stid = oci_parse($conn,$sql);
+        $stid = oci_parse($conn, $sql);
 
         //liaison des variables
-        oci_bind_by_name($stid, ':codeCorresp', $codeCorresp);
         oci_bind_by_name($stid, ':codeLabo', $codeLabo);
-        oci_bind_by_name($stid, ':titre', $titre);
-        oci_bind_by_name($stid, ':nom', $nom);
-        oci_bind_by_name($stid, ':prenom', $prenom);
-        oci_bind_by_name($stid, ':telMobile', $telMobile);
-        oci_bind_by_name($stid, ':telFixe', $telFixe);
-        oci_bind_by_name($stid, ':email', $email);
+        oci_bind_by_name($stid, ':nomLabo', $nomLabo);
+        oci_bind_by_name($stid, ':codeGef', $codeGef);
+        oci_bind_by_name($stid, ':adresse', $adresse);
+        oci_bind_by_name($stid, ':codePostal', $codePostal);
+        oci_bind_by_name($stid, ':ville', $ville);
+        oci_bind_by_name($stid, ':region', $region);
+        oci_bind_by_name($stid, ':pays', $pays);
+        oci_bind_by_name($stid, ':telGenerique', $telGenerique);
+        oci_bind_by_name($stid, ':faxGenerique', $faxGenerique);
+        oci_bind_by_name($stid, ':mailGenA', $mailGenA);
+        oci_bind_by_name($stid, ':mailGenB', $mailGenB);
+        oci_bind_by_name($stid, ':mailGenC', $mailGenC);
+        oci_bind_by_name($stid, ':dateMaj', $dateMaj);
+        oci_bind_by_name($stid, ':commentaire', $commentaire);
 
 
-        //Verification de la PK Code_Corresp
-        $checkSql = "SELECT COUNT(*) AS CNT FROM CORRESPONDANTS WHERE CODE_CORRESP = :codeCorresp";
+        //Verification de la PK Code_LABO
+        $checkSql = "SELECT COUNT(*) AS CNT FROM LABOS WHERE CODE_LABO = :codeLabo";
         $checkST = oci_parse($conn, $checkSql);
-        oci_bind_by_name($checkST, ':codeCorresp', $codeCorresp);
+        oci_bind_by_name($checkST, ':codeLabo', $codeLabo);
         oci_execute($checkST);
         $checkrow = oci_fetch_assoc($checkST);
-        if ($checkrow['CNT'] > 0){
-            $erreurs[] = "Le code correspondant << {$codeCorresp} >> existe déjà.";
+        if ($checkrow['CNT'] > 0) {
+            $erreurs[] = "Le code laboratoire << {$codeLabo} >> existe déjà.";
         }
-                    //execution et commit
+        //execution et commit
         $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
 
-        if ($ok && $checkrow === 0 ) {
+        if ($ok && $checkrow === 0) {
             $success = true;
         } else {
             $err = oci_error($stid);
-            $erreurs[] = 'Erreur Oracle: '. htmlspecialchars($err['message']);
+            $erreurs[] = 'Erreur Oracle: ' . htmlspecialchars($err['message']);
         }
 
         oci_free_statement($stid);
     }
-
 }
 ?>
 
@@ -109,180 +116,215 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en" data-bs-theme="auto">
 
 <head>
-  <script src="../js/color-modes.js"></script>
+    <script src="../js/color-modes.js"></script>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="DevClownJP">
-  <meta name="generator" content="Hugo 0.118.2">
-  <title>InterfaceBDDRisquadoc</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="DevClownJP">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>InterfaceBDDRisquadoc</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../css/header.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
 
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-  <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-  <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-  <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
-  <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
-  <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
-  <link src="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
-  <meta name="theme-color" content="#712cf9">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
+    <link src="../../node_modules/sweetalert2/dist/sweetalert2.min.css">
+    <meta name="theme-color" content="#712cf9">
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../../node_modules/jquery/dist/jquery.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </head>
 
 <body class="container py-4">
-    
+
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
-        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
         </symbol>
         <symbol id="circle-half" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
         </symbol>
         <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
-        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+            <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+            <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
         </symbol>
         <symbol id="sun-fill" viewBox="0 0 16 16">
-        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+            <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
         </symbol>
     </svg>
 
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-            <use href="#circle-half"></use>
-        </svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-                <use href="#sun-fill"></use>
-            </svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em">
-                <use href="#check2"></use>
-            </svg>
-            </button>
-        </li>
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-                <use href="#moon-stars-fill"></use>
-            </svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em">
-                <use href="#check2"></use>
-            </svg>
-            </button>
-        </li>
-        <li>
-            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+            <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
                 <use href="#circle-half"></use>
             </svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em">
-                <use href="#check2"></use>
-            </svg>
-            </button>
-        </li>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#sun-fill"></use>
+                    </svg>
+                    Light
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#moon-stars-fill"></use>
+                    </svg>
+                    Dark
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+                    <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
+                        <use href="#circle-half"></use>
+                    </svg>
+                    Auto
+                    <svg class="bi ms-auto d-none" width="1em" height="1em">
+                        <use href="#check2"></use>
+                    </svg>
+                </button>
+            </li>
         </ul>
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="bootstrap" viewBox="0 0 118 94">
-        <title>Bootstrap</title>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
+            <title>Bootstrap</title>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
         </symbol>
         <symbol id="home" viewBox="0 0 16 16">
-        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
+            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
         </symbol>
         <symbol id="speedometer2" viewBox="0 0 16 16">
-        <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z" />
-        <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z" />
+            <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z" />
+            <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z" />
         </symbol>
         <symbol id="table" viewBox="0 0 16 16">
-        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z" />
+            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z" />
         </symbol>
         <symbol id="people-circle" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
         </symbol>
         <symbol id="grid" viewBox="0 0 16 16">
-        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
+            <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
         </symbol>
     </svg>
 
-    <h1>Ajouter un nouveau correspondant</h1>
-    <?php if($success):?>
-        <div class="alert alert-success">Le correspondant a bien été ajouté.</div>
+    <h1>Ajouter un nouveau laboratoire</h1>
+    <?php if ($success): ?>
+        <div class="alert alert-success">Le laboratoire a bien été ajouté.</div>
     <?php endif; ?>
 
-    <?php if(!empty($erreurs)): ?>
+    <?php if (!empty($erreurs)): ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach($erreurs as $e): ?>
-                    <li><?=htmlspecialchars($e)?></li>
-                    <?php endforeach; ?>
+                <?php foreach ($erreurs as $e): ?>
+                    <li><?= htmlspecialchars($e) ?></li>
+                <?php endforeach; ?>
             </ul>
         </div>
     <?php endif; ?>
 
     <form method="post" novalidate>
         <div class="mb-3">
-            <label for="codeCorresp" class="form-label">Code Correspondant *</label>
-            <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required
-                    value="<?=htmlspecialchars($_POST['codeCorresp'] ?? '') ?>">
-        </div>
-        <div class="mb-3">
-            <label for="codeLabo" class="form-label">Code Labo *</label>
+            <label for="codeLabo" class="form-label">Code Laboratoire *</label>
             <input type="text" class="form-control" id="codeLabo" name="codeLabo" required
-                    value="<?=htmlspecialchars($_POST['codeLabo'] ?? '') ?>">
+                value="<?= htmlspecialchars($_POST['codeLabo'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="titre" class="form-label">Titre (Mr ou Mme)</label>
-            <input type="text" class="form-control" id="titre" name="titre"
-                    value="<?=htmlspecialchars($_POST['titre'] ?? '') ?>">
+            <label for="nomLabo" class="form-label">Nom du Laboratoire *</label>
+            <input type="text" class="form-control" id="nomLabo" name="nomLabo" required
+                value="<?= htmlspecialchars($_POST['nomLabo'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="nom" class="form-label">Nom *</label>
-            <input type="text" class="form-control" id="nom" name="nom" required
-                    value="<?=htmlspecialchars($_POST['nom'] ?? '') ?>">
+            <label for="codeGef" class="form-label">Code GEF</label>
+            <input type="text" class="form-control" id="codeGef" name="titre" required
+                value="<?= htmlspecialchars($_POST['codeGef'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="prenom" class="form-label">Prenom</label>
-            <input type="text" class="form-control" id="prenom" name="prenom"
-                    value="<?=htmlspecialchars($_POST['prenom'] ?? '') ?>">
+            <label for="adresse" class="form-label">Adresse</label>
+            <input type="text" class="form-control" id="adresse" name="adresse" required
+                value="<?= htmlspecialchars($_POST['adresse'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="telMobile" class="form-label">Telephone mobile du correspondant(*si pas de fixe)</label>
-            <input type="text" class="form-control" id="telMobile" name="telMobile"
-                    value="<?=htmlspecialchars($_POST['telMobile'] ?? '') ?>">
+            <label for="codePostal" class="form-label">Code Postal</label>
+            <input type="text" class="form-control" id="codePostal" name="codePostal" required
+                value="<?= htmlspecialchars($_POST['codePostal'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="telFixe" class="form-label">Telephone fixe du correspondant(*si pas de mobile)</label>
-            <input type="text" class="form-control" id="telFixe" name="telFixe"
-                    value="<?=htmlspecialchars($_POST['telFixe'] ?? '') ?>">
+            <label for="ville" class="form-label">Ville</label>
+            <input type="text" class="form-control" id="ville" name="ville" required
+                value="<?= htmlspecialchars($_POST['ville'] ?? '') ?>">
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">Email du correspondant *</label>
-            <input type="text" class="form-control" id="email" name="email" required
-                    value="<?=htmlspecialchars($_POST['email'] ?? '') ?>">
+            <label for="region" class="form-label">Region</label>
+            <input type="text" class="form-control" id="region" name="region" required
+                value="<?= htmlspecialchars($_POST['region'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="pays" class="form-label">Pays</label>
+            <input type="text" class="form-control" id="pays" name="pays" required
+                value="<?= htmlspecialchars($_POST['pays'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="telGenerique" class="form-label">Telephone</label>
+            <input type="text" class="form-control" id="telGenerique" name="telGenerique"
+                value="<?= htmlspecialchars($_POST['telGenerique'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="faxGenerique" class="form-label">Fax</label>
+            <input type="text" class="form-control" id="faxGenerique" name="faxGenerique"
+                value="<?= htmlspecialchars($_POST['faxGenerique'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="mailGenA" class="form-label">Email generique 1</label>
+            <input type="email" class="form-control" id="mailGenA" name="mailGenA"
+                value="<?= htmlspecialchars($_POST['mailGenA'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="mailGenB" class="form-label">Email generique 2</label>
+            <input type="email" class="form-control" id="mailGenB" name="mailGenB"
+                value="<?= htmlspecialchars($_POST['mailGenB'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="mailGenC" class="form-label">Email generique 3</label>
+            <input type="email" class="form-control" id="mailGenC" name="mailGenC"
+                value="<?= htmlspecialchars($_POST['mailGenC'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="dateMaj" class="form-label">Date de mise à jour</label>
+            <input type="text" class="form-control" id="dateMaj" name="dateMaj"
+                value="<?= htmlspecialchars($_POST['dateMaj'] ?? '') ?>">
+        </div>
+        <div class="mb-3">
+            <label for="commentaire" class="form-label">Commentaire</label>
+            <input type="text" class="form-control" id="commentaire" name="commentaire" 
+                value="<?= htmlspecialchars($_POST['commentaire'] ?? '') ?>">
         </div>
 
         <button type="submit" class="btn btn-success">Enregistrer</button>
@@ -291,6 +333,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </body>
 
+<script src="../js/main.js"></script>
 <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/29765f633a.js" crossorigin="anonymous"></script>

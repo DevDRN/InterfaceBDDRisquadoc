@@ -263,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="mb-3">
             <label for="codeGef" class="form-label">Code GEF</label>
-            <input type="text" class="form-control" id="codeGef" name="titre" required
+            <input type="text" class="form-control" id="codeGef" name="codeGef" required
                 value="<?= htmlspecialchars($_POST['codeGef'] ?? '') ?>">
         </div>
         <div class="mb-3">

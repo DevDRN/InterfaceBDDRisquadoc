@@ -319,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label for="dateMaj" class="form-label">Date de mise à jour</label>
             <input type="text" class="form-control" id="dateMaj" name="dateMaj"
-                value="<?= htmlspecialchars($_POST['dateMaj'] ?? '') ?>">
+                readonly value="<?= htmlspecialchars($_POST['dateMaj'] ?? '') ?>">
         </div>
         <div class="mb-3">
             <label for="commentaire" class="form-label">Commentaire</label>

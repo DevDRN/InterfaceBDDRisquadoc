@@ -332,15 +332,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </div>
     <div class="mb-3">
       <label for="codePostal" class="form-label">Code postal *</label>
-      <input type="text" class="form-control" id="codePostal" name="codePostal" value="<?= htmlspecialchars($codePostal ?? '') ?>">
+      <input type="text" class="form-control" id="codePostal" name="codePostal" required value="<?= htmlspecialchars($codePostal ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="ville" class="form-label">Ville</label>
-      <input type="text" class="form-control" id="ville" name="ville" value="<?= htmlspecialchars($ville ?? '') ?>">
+      <label for="ville" class="form-label">Ville *</label>
+      <input type="text" class="form-control" id="ville" name="ville" required value="<?= htmlspecialchars($ville ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="region" class="form-label">Region</label>
-      <input type="text" class="form-control" id="region" name="region" value="<?= htmlspecialchars($region ?? '') ?>">
+      <label for="region" class="form-label">Region *</label>
+      <input type="text" class="form-control" id="region" name="region" required value="<?= htmlspecialchars($region ?? '') ?>">
     </div>
     <div class="mb-3">
       <label for="pays" class="form-label">Pays *</label>
@@ -348,31 +348,31 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </div>
     <div class="mb-3">
       <label for="telGenerique" class="form-label">Telphone Generique (* si pas de fax)</label>
-      <input type="text" class="form-control" id="telGenerique" name="telGenerique" required value="<?= htmlspecialchars($telGenerique ?? '') ?>">
+      <input type="text" class="form-control" id="telGenerique" name="telGenerique" value="<?= htmlspecialchars($telGenerique ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="faxGenerique" class="form-label">Fax Generique (* si pas de telephone)</label>
+      <input type="text" class="form-control" id="faxGenerique" name="faxGenerique" value="<?= htmlspecialchars($faxGenerique ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="mailGenA" class="form-label">Email generique 1 du laboratoire (* au moins un email valide)</label>
+      <input type="email" class="form-control" id="mailGenA" name="mailGenA" required value="<?= htmlspecialchars($mailGenA ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="mailGenB" class="form-label">Email generique 2 du laboratoire (* au moins un email valide)</label>
+      <input type="email" class="form-control" id="mailGenB" name="mailGenB" required value="<?= htmlspecialchars($mailGenB ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="mailGenC" class="form-label">Email generique 3 du laboratoire (* au moins un email valide)</label>
+      <input type="email" class="form-control" id="mailGenC" name="mailGenC" required value="<?= htmlspecialchars($mailGenC ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="dateMaj" class="form-label">Date de Mise à jour</label>
+      <input type="text" class="form-control" id="dateMaj" name="dateMaj" readonly value="<?= htmlspecialchars($dateMaj ?? '') ?>">
     </div>
     <div class="mb-3">
-      <label for="pays" class="form-label">Email du correspondant *</label>
-      <input type="text" class="form-control" id="pays" name="pays" required value="<?= htmlspecialchars($pays ?? '') ?>">
+      <label for="commentaire" class="form-label">Commentaire</label>
+      <input type="text" class="form-control" id="commentaire" name="commentaire" value="<?= htmlspecialchars($commentaire ?? '') ?>">
     </div>
     <button type="submit" name="update" class="btn btn-primary">Enregistrer les modifications</button>
     <a href="dashboard.php" class="btn btn-secondary">Annuler</a>

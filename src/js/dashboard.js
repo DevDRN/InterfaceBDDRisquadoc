@@ -17,8 +17,8 @@
 
 function testSweet(){
     Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
+        title: "En développement",
+        text: "Pas d'utilisateur pour l'instant",
         icon: "success"
       });
 };

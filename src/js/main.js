@@ -12,5 +12,5 @@ document.getElementById('dateMaj').value = dateFormat;
 function setUsername() {
     const prenom = document.getElementById('prenom').value.trim().toLowerCase();
     const nom = document.getElementById('nom').value.trim().toLowerCase();
-    document.getElementById('username').value = prenom && nom ? '${prenom}.${nom}' : '';
+    document.getElementById('username').value = prenom && nom ? `${prenom}.${nom}` : '';
 }

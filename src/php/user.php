@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-include 'sendMail.php';
+// include 'sendMail.php';
 
 $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
 
@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error[] = 'Email invalide';
         }
-        if (!in_array($role, ['admin','membre','visiteur'])) {
+        if (!in_array($roles, ['admin','membre','visiteur'])) {
             $error[] = 'Rôle invalide';
         }
         if (empty($error)) {
@@ -238,8 +238,78 @@ oci_execute($stmt);
 <h1>Gestion des utilisateurs</h1>
 
 <?php foreach ($message as $m): ?>
-    <div class ="alert alert-success"></div>
+    <div class ="alert alert-success"><?=htmlspecialchars($m) ?></div>
+    <?php endforeach;?>
+    <?php if($error): ?>
+        <div class="alert alert-danger"><ul><?php foreach ($error as $e) echo '<li>'.htmlspecialchars($e).'</li>'; ?></ul></div>
+    <?php endif; ?>
 
+<!-- Formulaire d'ajout -->
+<form method="post" class="row g-2 mb-4">
+    <div class="col-md-2">
+        <label for="">Prénom</label>
+        <input id="prenom" name="prenom" class="form-control" oninput="setUsername()"required>
+    </div>
+    <div class="col-md-2">
+        <label for="">Nom</label>
+        <input id="nom" name="nom" class="form-control" oninput="setUsername()"required>
+    </div>
+    <div class="col-md-2">
+        <label for="">Username</label>
+        <input id="username" name="username" class="form-control" readonly>
+    </div>
+    <div class="col-md-2">
+        <label for="">Email</label>
+        <input name="email" type="email" class="form-control" required>
+    </div>
+    <div class="col-md-2">
+        <label for="">Matricule</label>
+        <input name="matricule" class="form-control" required>
+    </div>
+    <div class="col-md-2">
+        <label for="">Rôle</label>
+        <select id="roles" name="roles" class="form-select" required>
+            <option value="admin">Administrateur</option>
+            <option value="membre">Membre</option>
+            <option value="visiteur">Visiteur</option>
+        </select>
+    </div>
+    <div class="col-md-12 text-end">
+        <button name="add_user" class="btn btn-success">Ajouter</button>
+    </div>
+</form>
+<!-- Tableau des utilisateurs -->
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Matricule</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Rôle</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($u = oci_fetch_assoc($stmt)): ?>
+            <tr>
+                <td><?= htmlspecialchars($u['MATRICULE']) ?></td>
+                <td><?= htmlspecialchars($u['USERNAME']) ?></td>
+                <td><?= htmlspecialchars($u['EMAIL']) ?></td>
+                <td><?= htmlspecialchars($u['NOM']) ?></td>
+                <td><?= htmlspecialchars($u['PRENOM']) ?></td>
+                <td><?= htmlspecialchars($u['ROLES']) ?></td>
+                <td>
+                    <form method="post" class="d-inline"><button name="reset_id" value="<?= $u['MATRICULE'] ?>" class="btn btn-warning btn-sm">Réinitialiser le mot de passe</button></form>
+                    <form method="post" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
+                        <button name="delete_id" value="<?= $u['MATRICULE'] ?>" class="btn btn-danger btn-sm">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
 
   <script src="../js/main.js"></script>
   <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -248,6 +318,7 @@ oci_execute($stmt);
   <script src="../js/dashboard.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+  </script>
 
 </body>
 

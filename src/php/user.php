@@ -39,13 +39,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (empty($error)) {
             $sql = 'INSERT INTO USERS (MATRICULE, USERNAME, MDP, NOM, PRENOM, EMAIL, ROLES)
-            VALUES (:matricule, :username, :mdp, :nom, :prenom, :email, :roles)';
+            VALUES (:matricule, :username, :pwd_hash, :nom, :prenom, :email, :roles)';
             $stid = oci_parse($conn, $sql);
 
             //liaison
             oci_bind_by_name($stid, ':matricule', $matricule);
             oci_bind_by_name($stid, 'username', $username);
-            oci_bind_by_name($stid, 'mdp', $mdp);
+            oci_bind_by_name($stid, 'pwd_hash', $pwd_hash);
             oci_bind_by_name($stid, 'nom', $nom);
             oci_bind_by_name($stid, 'prenom', $prenom);
             oci_bind_by_name($stid, 'email', $email);

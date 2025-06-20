@@ -75,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
  */                
             } else {
                 $err = oci_error($stid);
-                $error[] = htmlentities($err['message']);
+                $error[] = htmlspecialchars($err['message']);
             }
             oci_free_statement($stid);
         }

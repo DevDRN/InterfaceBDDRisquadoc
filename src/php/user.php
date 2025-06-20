@@ -97,10 +97,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "DELETE FROM USERS WHERE MATRICULE = :matricule";
         $stm = oci_parse($conn, $sql);
         oci_bind_by_name($stm, ':matricule',$_POST['delete_id']);
-        oci_bind_by_name($stm, ':nom', $nom);
-        oci_bind_by_name($stm, ':prenom', $prenom);
+        //oci_bind_by_name($stm, ':nom', $nom);
+        //oci_bind_by_name($stm, ':prenom', $prenom);
         if(oci_execute($stm, OCI_COMMIT_ON_SUCCESS)){
-            $message[] = "L\'utilisateur '$nom','$prenom' a été supprimer.";
+            $message[] = "L'utilisateur a été supprimer.";
         }else {
             $e = oci_error($stm);
             $error[] = htmlentities($e['message']);

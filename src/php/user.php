@@ -59,13 +59,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkrows = oci_fetch_assoc($checkST);
             if ($checkrows['CNT'] > 0){
                 $error[] = "Le matricule <<{$matricule}>> existe déjà.";
-            }else {
-            $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
             }
+            $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
+            
 
             if ($ok && $checkrows === 0) {
                 $success = true;
-                $message[] = "Utilisateur '$username' ajoutée.";
+                $message[] = "Utilisateur ajoutée.";
 
 /*                 $subject = "Bienvenue, votre compte a été créé.";
                 $body = "Bonjour $prenom,\n\n Votre compte a été créé.\nLogin: $username \nMot de passe temporaire: Chang3M3! \nMerci de le modifier.\n";

@@ -72,12 +72,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!sendEmail($email,$subject,$body)) {
                     $error[] = "Échec de l'envoi de mail";
                 }
-                
+ */                
             } else {
                 $err = oci_error($stid);
                 $error[] = htmlentities($err['message']);
             }
- */            oci_free_statement($stid);
+            oci_free_statement($stid);
         }
     }
     elseif (isset($_POST['reset_id'])) {

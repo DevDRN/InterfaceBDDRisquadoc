@@ -66,17 +66,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($ok && $checkrows === 0) {
                 $success = true;
                 $message[] = "Utilisateur '$username' ajoutée.";
+
+/*                 $subject = "Bienvenue, votre compte a été créé.";
                 $body = "Bonjour $prenom,\n\n Votre compte a été créé.\nLogin: $username \nMot de passe temporaire: Chang3M3! \nMerci de le modifier.\n";
                 if (!sendEmail($email,$subject,$body)) {
-                    $error[] = "Échec de l'envoi de l'e‑mail";
+                    $error[] = "Échec de l'envoi de mail";
                 }
                 
             } else {
                 $err = oci_error($stid);
                 $error[] = htmlentities($err['message']);
-                var_dump($error);
             }
-            oci_free_statement($stid);
+ */            oci_free_statement($stid);
         }
     }
     elseif (isset($_POST['reset_id'])) {

@@ -1,7 +1,13 @@
 <?php
-
 declare(strict_types=1);
-// include 'sendMail.php';
+
+require_once __DIR__ . '../../../PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../../PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../../PHPMailer/src/SMTP.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
 
@@ -15,9 +21,33 @@ if (!$conn) {
 $message = [];
 $error = [];
 
-function sendEmail(string $sendTo, string $subject, string $message): bool {
+ function sendWelcomeEmail(string $email, string $nom, string $prenom, string $username, string $subject, string $body): bool {
+  $mail= new PHPMailer(true);
     $headers = "From: noreply@looklab.com\r\n";
-    return mail($sendTo,$subject,$message,$headers);
+    try {
+      $mail->isSMTP();
+      $mail->Host       = 'smtp.office365.com';
+      $mail->SMTPAuth   = true;
+      $mail->Username   = 'svc_power365@chu-lille.fr';
+      $mail->Password   = 'Z5BDUVwg8uwZXB';
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->Port       = 587;
+      $mail->CharSet    = 'UTF-8';
+      $mail->Encoding   = 'base64';
+
+      $mail->setFrom('svc_power365@chu-lille.fr', 'InterfaceBDDEnnov');
+      //$mail->Sender = 'svc_power365@chu-lille.fr';
+      $mail->addAddress($email, $prenom);
+      $mail->isHTML(true);
+      $mail->Subject  = $subject;
+      $mail->Body     = nl2br($body);
+      $mail->AltBody  = $body;
+
+      return $mail->send();
+    } catch (Exception $e) {
+      error_log('PHPMailer Error: ' . $mail->ErrorInfo);
+      return false;
+    }
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -44,12 +74,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //liaison
             oci_bind_by_name($stid, ':matricule', $matricule);
-            oci_bind_by_name($stid, 'username', $username);
-            oci_bind_by_name($stid, 'pwd_hash', $pwd_hash);
-            oci_bind_by_name($stid, 'nom', $nom);
-            oci_bind_by_name($stid, 'prenom', $prenom);
-            oci_bind_by_name($stid, 'email', $email);
-            oci_bind_by_name($stid, 'roles', $roles);
+            oci_bind_by_name($stid, ':username', $username);
+            oci_bind_by_name($stid, ':pwd_hash', $pwd_hash);
+            oci_bind_by_name($stid, ':nom', $nom);
+            oci_bind_by_name($stid, ':prenom', $prenom);
+            oci_bind_by_name($stid, ':email', $email);
+            oci_bind_by_name($stid, ':roles', $roles);
 
             //Verif PK
             $checkSql = 'SELECT COUNT(*) AS CNT FROM USERS WHERE MATRICULE = :matricule';
@@ -61,22 +91,27 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error[] = "Le matricule <<{$matricule}>> existe déjà.";
             }
             $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
-            
 
-            if ($ok && $checkrows === 0) {
-                $success = true;
+            if ($ok && intval($checkrows['CNT'] === '0')) {
                 $message[] = "Utilisateur ajoutée.";
 
-/*                 $subject = "Bienvenue, votre compte a été créé.";
-                $body = "Bonjour $prenom,\n\n Votre compte a été créé.\nLogin: $username \nMot de passe temporaire: Chang3M3! \nMerci de le modifier.\n";
-                if (!sendEmail($email,$subject,$body)) {
+                $subject = "Bienvenue, votre compte a été créé.";
+                $body = "Bonjour $prenom,\r\n\r\n Votre compte a été créé.\r\nLogin: $username \r\nMot de passe temporaire: Chang3M3! \r\nMerci de le modifier.\r\n";
+                if (!sendWelcomeEmail($email,$nom,$prenom,$username,$subject,$body)) {
                     $error[] = "Échec de l'envoi de mail";
                 }
- */                
+               
             } else {
                 $err = oci_error($stid);
-                $error[] = htmlspecialchars($err['message']);
+                if ($err && isset($err['message'])){
+
+                $error[] = 'Erreur Oracle: '.htmlspecialchars($err['message'], ENT_QUOTES|ENT_SUBSTITUTE);
+                } else {
+                  
+                  $error[] = "Erreur inconnue avec Oracle";
+                }
             }
+            
             oci_free_statement($stid);
         }
     }
@@ -87,7 +122,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         oci_bind_by_name($stm, ':mdp', $new);
         oci_bind_by_name($stm, ':matricule', $_POST['reset_id']);
         if(oci_execute($stm, OCI_COMMIT_ON_SUCCESS)){
-            $message[] = "Mot de passe modifié";
+          $message[] = "Mot de passe modifié";
+
+          $subject = "$username, votre mot de passe a été modifié.";
+          $body = "Bonjour $prenom,\r\n\r\n Votre mot de passe a été modifié.\r\nMot de passe temporaire: NewP@ss123 \r\nMerci de le modifier.\r\n";
+          if (!sendWelcomeEmail($email,$nom,$prenom,$username,$subject,$body)) {
+              $error[] = "Échec de l'envoi de mail";
+          }
+
         }else {
             $e = oci_error($stm);
             $error[] = htmlentities($e['message']);

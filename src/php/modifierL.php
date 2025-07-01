@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 //Traitement de MàJ
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     //Recup et clear
-    $codeLabo = trim($_POST['codeLabo'] ?? '');
+    // $codeLabo = trim($_POST['codeLabo'] ?? '');
     $nomLabo = trim($_POST['nomLabo'] ?? '');
     $codeGef = trim($_POST['codeGef'] ?? '');
     $adresse = trim($_POST['adresse'] ?? '');
@@ -57,10 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
 
     //Validation simple
-    if ($codeLabo === '') { //pense verif longueur
+/*     if ($codeLabo === '') { //pense verif longueur
         $erreurs[] = 'Code Labo requis.';
     }
-    if ($nomLabo === '') {
+ */    if ($nomLabo === '') {
         $erreurs[] = 'Nom du Labo requis.';
     }
     if ($codeGef === '') { //pense verif longueur
@@ -104,11 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
                         MAIL_GENE_3 = :mailGenC,
                         DATE_MAJ = :dateMaj,
                         COMMENTAIRE = :commentaire
-                        WHERE CODE_LABO = :codeLabo";
+                        WHERE CODE_LABO = $id";
 
         $stmtUpd = oci_parse($conn,$sqlUpd);
 
-        oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo);
+        // oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo);
         oci_bind_by_name($stmtUpd, ':nomLabo', $nomLabo);
         oci_bind_by_name($stmtUpd, ':codeGef', $codeGef);
         oci_bind_by_name($stmtUpd, ':adresse', $adresse);
@@ -152,7 +152,7 @@ if(!$row) {
 
 //Si pas de POST update, init champs
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
-    $codeLabo = $row['CODE_LABO'];
+    // $codeLabo = $row['CODE_LABO'];
     $nomLabo = $row['NOM_LABO'];
     $codeGef = $row['CODE_GEF'];
     $adresse = $row['ADRESSE'];
@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </symbol>
   </svg>
 
-  <h1>Modifier / Supprimer le laboratoire <?= htmlspecialchars((string)$nomLabo) ?> <?= htmlspecialchars((string)$codeLabo) ?></h1>
+  <h1>Modifier / Supprimer le laboratoire <?= htmlspecialchars((string)$nomLabo) ?></h1>
 
   <?php if ($success): ?>
     <div class="alert alert-success"><?= $success ?></div>
@@ -314,11 +314,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
 
   <!-- Formulaire de mise à jour -->
   <form method="post" novalidate class="mb-4">
-    <div class="mb-3">
+<!--     <div class="mb-3">
       <label for="codeLabo" class="form-label">Code laboratoire *</label>
       <input type="text" class="form-control" id="codeLabo" name="codeLabo" required value="<?= htmlspecialchars($codeLabo ?? '') ?>">
-    </div>
-        <div class="mb-3">
+    </div> -->        
+    <div class="mb-3">
       <label for="nomLabo" class="form-label">Nom Laboratoire *</label>
       <input type="text" class="form-control" id="nomLabo" name="nomLabo" required value="<?= htmlspecialchars($nomLabo ?? '') ?>">
     </div>

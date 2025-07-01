@@ -187,7 +187,7 @@ if (!$nrowsCorresp) {
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Code Labo</th>
+                    <!-- <th scope="col">Code Labo</th> -->
                     <th scope="col">Nom Labo</th>
                     <th scope="col">Code GEF</th>
                     <th scope="col">Adresse</th>
@@ -196,7 +196,7 @@ if (!$nrowsCorresp) {
             </thead>
             <tbody>
                 <tr style="height: 52px;">
-                    <td class="u-table-cell"><?= $results["CODE_LABO"][0] ?></td>
+                    <!-- <td class="u-table-cell"><?= $results["CODE_LABO"][0] ?></td> -->
                     <td class="u-table-cell"><?= $results["NOM_LABO"][0] ?></td>
                     <td class="u-table-cell"><?= $results["CODE_GEF"][0] ?></td>
                     <td class="u-table-cell"><?= $results["ADRESSE"][0] ?></td>
@@ -258,24 +258,26 @@ if (!$nrowsCorresp) {
                 <thead>
                     <tr>
                         <th class="col-1">#</th>
-                        <th scope="col">Code Correspondant</th>
-                        <th scope="col">Code Labo</th>
                         <th scope="col">Titre</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                     </tr>
                 </thead>
                 <tbody>';
+/*                         <th scope="col">Code Correspondant</th>
+                        <th scope="col">Code Labo</th>
+ */
                     
             for ($i = 0; $i < $nrowsCorresp; $i++) {
                         echo '<tr style="height: 52px;">
                         <td class="u-table-cell">' . $i+1 . '</td>
-                        <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['CODE_CORRESP'][$i]) . '</td>
-                        <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['CODE_LABO'][$i]) . '</td>
                         <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['TITRE'][$i]) . '</td>
                         <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['NOM'][$i]) . '</td>
                         <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['PRENOM'][$i]) . '</td>
                     </tr>';
+                        // <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['CODE_CORRESP'][$i]) . '</td>
+                        // <td class="u-table-cell">' . htmlspecialchars($resultsCorresp['CODE_LABO'][$i]) . '</td>
+
             }
                     echo'
                     </tbody>

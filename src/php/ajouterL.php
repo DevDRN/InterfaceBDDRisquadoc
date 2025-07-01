@@ -15,7 +15,7 @@ if (!$conn) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Recup et nettoyage
-    $codeLabo = trim($_POST['codeLabo'] ?? '');
+    // $codeLabo = trim($_POST['codeLabo'] ?? '');
     $nomLabo = trim($_POST['nomLabo'] ?? '');
     $codeGef = trim($_POST['codeGef'] ?? '');
     $adresse = trim($_POST['adresse'] ?? '');
@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $commentaire = trim($_POST['commentaire'] ?? '');
 
     //Validation simple
-    if ($codeLabo === '') { //pense verif longueur
+/*     if ($codeLabo === '') { //pense verif longueur
         $erreurs[] = 'Code Labo requis.';
-    }
+    } */
     if ($nomLabo === '') {
         $erreurs[] = 'Nom du Labo requis.';
     }
@@ -63,15 +63,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erreurs[] = 'L\'email est invalide et/ou au moins une adresse mail est requise.';
     }
 
+    $sqlNewLab = "SELECT COUNT(*) AS CNT FROM LABOS";
+    $stidNewLab = oci_parse($conn,$sqlNewLab);
+    oci_execute($stidNewLab);
+    $rowNewLab = oci_fetch_assoc($stidNewLab);
+    $countNewLab = intval($rowNewLab['CNT']);
+    $newLab = $countNewLab + 1;
+    oci_free_statement($stidNewLab);
+
+
     if (empty($erreurs)) {
         //preparation de la requete
         $sql = "INSERT INTO LABOS (CODE_LABO, NOM_LABO, CODE_GEF, ADRESSE, CP, VILLE, REGION, PAYS, TEL_GENERIQUE, FAX_GENERIQUE, MAIL_GENE_1, MAIL_GENE_2, MAIL_GENE_3, DATE_MAJ, COMMENTAIRE)
-                VALUES (:codeLabo, :nomLabo, :codeGef, :adresse, :codePostal, :ville, :region, :pays, :telGenerique, :faxGenerique, :mailGenA, :mailGenB, :mailGenC, :dateMaj, :commentaire)";
+                VALUES (:newLab, :nomLabo, :codeGef, :adresse, :codePostal, :ville, :region, :pays, :telGenerique, :faxGenerique, :mailGenA, :mailGenB, :mailGenC, :dateMaj, :commentaire)";
 
         $stid = oci_parse($conn, $sql);
 
         //liaison des variables
-        oci_bind_by_name($stid, ':codeLabo', $codeLabo);
+        oci_bind_by_name($stid, ':newLab', $newLab);
         oci_bind_by_name($stid, ':nomLabo', $nomLabo);
         oci_bind_by_name($stid, ':codeGef', $codeGef);
         oci_bind_by_name($stid, ':adresse', $adresse);
@@ -89,18 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         //Verification de la PK Code_LABO
-        $checkSql = "SELECT COUNT(*) AS CNT FROM LABOS WHERE CODE_LABO = :codeLabo";
+/*         $checkSql = "SELECT COUNT(*) AS CNT FROM LABOS WHERE CODE_GEF = :codeGef";
         $checkST = oci_parse($conn, $checkSql);
-        oci_bind_by_name($checkST, ':codeLabo', $codeLabo);
+        oci_bind_by_name($checkST, ':codeGef', $codeGef);
         oci_execute($checkST);
         $checkrow = oci_fetch_assoc($checkST);
         if ($checkrow['CNT'] > 0) {
-            $erreurs[] = "Le code laboratoire << {$codeLabo} >> existe déjà.";
+            $erreurs[] = "Le laboratoire au code GEF << {$codeGef} >> existe déjà.";
         }
-        //execution et commit
+ */        //execution et commit
         $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
 
-        if ($ok && $checkrow === 0) {
+        if ($ok /* && $checkrow === 0 */) {
             $success = true;
         } else {
             $err = oci_error($stid);
@@ -251,12 +260,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="post" novalidate>
-        <div class="mb-3">
+<!--         <div class="mb-3">
             <label for="codeLabo" class="form-label">Code Laboratoire *</label>
             <input type="text" class="form-control" id="codeLabo" name="codeLabo" required
                 value="<?= htmlspecialchars($_POST['codeLabo'] ?? '') ?>">
         </div>
-        <div class="mb-3">
+ -->        <div class="mb-3">
             <label for="nomLabo" class="form-label">Nom du Laboratoire *</label>
             <input type="text" class="form-control" id="nomLabo" name="nomLabo" required
                 value="<?= htmlspecialchars($_POST['nomLabo'] ?? '') ?>">

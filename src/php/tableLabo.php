@@ -30,7 +30,6 @@ function tableLaboShow()
       <table class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
-            <th scope="col">Code Labo</th>
             <th scope="col">Nom du Labo</th>
             <th scope="col">Ville</th>
             <th scope="col">Code Postal</th>
@@ -38,19 +37,20 @@ function tableLaboShow()
           </tr>
         </thead>
         <tbody>';
+            //<th scope="col">Code Labo</th>
 
     if ($nrows > 0 ) {
 
         for ($i=0; $i < $nrows; $i++){
 
           echo '<tr style="height: 52px;">
-            <td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
             <td class="u-table-cell">'.$results["NOM_LABO"][$i].'</td>
             <td class="u-table-cell">'.$results["VILLE"][$i].'</td>
             <td class="u-table-cell">'.$results["CP"][$i].'</td>
             <td class="u-table-cell">'.$results["PAYS"][$i].'</td>
             <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]),'"> Details </a></td>
           </tr>';
+            //<td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
         }
     }
     echo ' </tbody>

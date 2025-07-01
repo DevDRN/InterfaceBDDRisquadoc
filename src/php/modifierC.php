@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 //Traitement de MàJ
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     //Recup et clear
-    $codeCorresp = trim($_POST['codeCorresp'] ?? '');
-    $codeLabo = trim($_POST['codeLabo'] ?? '');
+    // $codeCorresp = trim($_POST['codeCorresp'] ?? '');
+    // $codeLabo = trim($_POST['codeLabo'] ?? '');
     $titre = trim($_POST['titre'] ?? '');
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
@@ -49,13 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $email = trim($_POST['email'] ?? '');
 
     //Validation simple
-    if ($codeCorresp === '') {
+/*     if ($codeCorresp === '') {
         $erreurs[] = 'Code Correspondant requis.';
     }
     if ($codeLabo === '') {
         $erreurs[] = 'Code Labo requis.';
     }
-    if ($nom === '') {
+ */    if ($nom === '') {
         $erreurs[] = 'Le nom est requis.';
     }
     if ($telFixe === '' && $telMobile === '') {
@@ -67,20 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
     if (empty($erreurs)) {
         $sqlUpd = "UPDATE CORRESPONDANTS
-                    SET CODE_LABO = :codeLabo,
-                        TITRE = :titre,
+                    SET TITRE = :titre,
                         NOM = :nom,
                         PRENOM = :prenom,
                         TEL_MOBILE_CORRESP = :telMobile,
                         TEL_FIXE_CORRESP = :telFixe,
                         MAIL_CORRESP = :email
-                        WHERE CODE_CORRESP = :codeCorresp";
+                        WHERE CODE_CORRESP = $id";
 
         $stmtUpd = oci_parse($conn,$sqlUpd);
 
-        oci_bind_by_name($stmtUpd, ':codeCorresp', $codeCorresp);
-        oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo);
-        oci_bind_by_name($stmtUpd, ':titre', $titre);
+/*         oci_bind_by_name($stmtUpd, ':codeCorresp', $codeCorresp);
+        oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo); */        oci_bind_by_name($stmtUpd, ':titre', $titre);
         oci_bind_by_name($stmtUpd, ':nom', $nom);
         oci_bind_by_name($stmtUpd, ':prenom', $prenom);
         oci_bind_by_name($stmtUpd, ':telMobile', $telMobile);
@@ -115,9 +113,8 @@ if(!$row) {
 
 //Si pas de POST update, init champs
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
-    $codeCorresp = $row['CODE_CORRESP'];
-    $codeLabo = $row['CODE_LABO'];
-    $titre = $row['TITRE'];
+/*     $codeCorresp = $row['CODE_CORRESP'];
+    $codeLabo = $row['CODE_LABO']; */    $titre = $row['TITRE'];
     $nom = $row['NOM'];
     $prenom = $row['PRENOM'];
     $telMobile = $row['TEL_MOBILE_CORRESP'];
@@ -270,15 +267,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
 
   <!-- Formulaire de mise à jour -->
   <form method="post" novalidate class="mb-4">
-    <div class="mb-3">
+<!--     <div class="mb-3">
       <label for="codeCorresp" class="form-label">Code Correspondant *</label>
       <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required value="<?= htmlspecialchars($codeCorresp ?? '') ?>">
     </div>
         <div class="mb-3">
       <label for="codeLabo" class="form-label">Code Labo *</label>
       <input type="text" class="form-control" id="codeLabo" name="codeLabo" required value="<?= htmlspecialchars($codeLabo ?? '') ?>">
-    </div>
-    <div class="mb-3">
+    </div> -->    
+      <div class="mb-3">
       <label for="titre" class="form-label">Titre (Mr ou Mme)</label>
       <input type="text" class="form-control" id="titre" name="titre" value="<?= htmlspecialchars($titre ?? '') ?>">
     </div>
@@ -300,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
     </div>
     <div class="mb-3">
       <label for="email" class="form-label">Email du correspondant *</label>
-      <input type="email" class="form-control" id="email" name="codeCoremailesp" required value="<?= htmlspecialchars($email ?? '') ?>">
+      <input type="text" class="form-control" id="email" name="email" required value="<?= htmlspecialchars($email ?? '') ?>">
     </div>
     <button type="submit" name="update" class="btn btn-primary">Enregistrer les modifications</button>
     <a href="dashboard.php" class="btn btn-secondary">Annuler</a>

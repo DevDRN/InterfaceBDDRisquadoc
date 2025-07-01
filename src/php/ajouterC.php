@@ -10,12 +10,24 @@ if (!$conn) {
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 
+
+// Recup Labo
+$sqlLab = 'SELECT CODE_LABO, NOM_LABO FROM LABOS ORDER BY NOM_LABO';
+$stidLab = oci_parse($conn, $sqlLab);
+oci_execute($stidLab);
+
+$labos = [];
+while ($row = oci_fetch_array($stidLab, OCI_ASSOC+OCI_RETURN_NULLS)) {
+    $labos[] = $row;
+}
+oci_free_statement($stidLab);
+
 //Traitement du formulaire en POST
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Recup et nettoyage
-    $codeCorresp = trim($_POST['codeCorresp'] ?? '');
-    $codeLabo = trim($_POST['codeLabo'] ?? '');
+    // $codeCorresp = trim($_POST['codeCorresp'] ?? '');
+    $codeLabo = $_POST['codeLabo'];
     $titre = trim($_POST['titre'] ?? '');
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
@@ -24,12 +36,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
 
     //Validation simple
-    if ($codeCorresp === '') {
-        $erreurs[] = 'Code Correspondant requis.';
-    }
-    if ($codeLabo === '') {
-        $erreurs[] = 'Code Labo requis.';
-    }
+    // if ($codeCorresp === '') {
+    //     $erreurs[] = 'Code Correspondant requis.';
+    // }
+    // if ($codeLabo === '') {
+    //     $erreurs[] = 'Code Labo requis.';
+    // }
     if ($nom === '') {
         $erreurs[] = 'Le nom est requis.';
     }
@@ -40,6 +52,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erreurs[] = 'L\'email est invalide';
     }
 
+    $sqlNewCor = "SELECT COUNT(*) AS CNT FROM CORRESPONDANTS";
+    $stidNewCor = oci_parse($conn,$sqlNewCor);
+    oci_execute($stidNewCor);
+    $rowNewCor = oci_fetch_assoc($stidNewCor);
+    $countNewCor = intval($rowNewCor['CNT']);
+    $newCor = $countNewCor + 1;
+    oci_free_statement($stidNewCor);
+
+
     if (empty($erreurs)) {
         //preparation de la requete
         $sql = "INSERT INTO CORRESPONDANTS (CODE_CORRESP, CODE_LABO, TITRE, NOM, PRENOM, TEL_MOBILE_CORRESP, TEL_FIXE_CORRESP, MAIL_CORRESP)
@@ -48,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stid = oci_parse($conn,$sql);
 
         //liaison des variables
-        oci_bind_by_name($stid, ':codeCorresp', $codeCorresp);
+        oci_bind_by_name($stid, ':codeCorresp', $newCor);
         oci_bind_by_name($stid, ':codeLabo', $codeLabo);
         oci_bind_by_name($stid, ':titre', $titre);
         oci_bind_by_name($stid, ':nom', $nom);
@@ -59,18 +80,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         //Verification de la PK Code_Corresp
-        $checkSql = "SELECT COUNT(*) AS CNT FROM CORRESPONDANTS WHERE CODE_CORRESP = :codeCorresp";
-        $checkST = oci_parse($conn, $checkSql);
-        oci_bind_by_name($checkST, ':codeCorresp', $codeCorresp);
-        oci_execute($checkST);
-        $checkrow = oci_fetch_assoc($checkST);
-        if ($checkrow['CNT'] > 0){
-            $erreurs[] = "Le code correspondant << {$codeCorresp} >> existe déjà.";
-        }
+        // $checkSql = "SELECT COUNT(*) AS CNT FROM CORRESPONDANTS WHERE CODE_CORRESP = :codeCorresp";
+        // $checkST = oci_parse($conn, $checkSql);
+        // oci_bind_by_name($checkST, ':codeCorresp', $codeCorresp);
+        // oci_execute($checkST);
+        // $checkrow = oci_fetch_assoc($checkST);
+        // if ($checkrow['CNT'] > 0){
+        //     $erreurs[] = "Le code correspondant << {$codeCorresp} >> existe déjà.";
+        // }
                     //execution et commit
         $ok = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
 
-        if ($ok && $checkrow === 0 ) {
+        if ($ok /* && $checkrow === 0 */ ) {
             $success = true;
         } else {
             $err = oci_error($stid);
@@ -116,6 +137,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../../node_modules/jquery/dist/jquery.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
 
 
 </head>
@@ -222,15 +248,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="post" novalidate>
-        <div class="mb-3">
+<!--         <div class="mb-3">
             <label for="codeCorresp" class="form-label">Code Correspondant *</label>
             <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required
                     value="<?=htmlspecialchars($_POST['codeCorresp'] ?? '') ?>">
-        </div>
+        </div> -->
         <div class="mb-3">
-            <label for="codeLabo" class="form-label">Code Labo *</label>
-            <input type="text" class="form-control" id="codeLabo" name="codeLabo" required
-                    value="<?=htmlspecialchars($_POST['codeLabo'] ?? '') ?>">
+            <label for="codeLabo" class="form-label"> Labo *</label>
+            <select id="codeLabo" name="codeLabo" class="form-select js-labo-select" required>
+                <option value="">--Sélectionnez un labo --</option>
+                <?php foreach ($labos as $labo): ?>
+                    <option value="<?= htmlspecialchars($labo['CODE_LABO']) ?>">
+                        <?= htmlspecialchars($labo['NOM_LABO']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="mb-3">
             <label for="titre" class="form-label">Titre (Mr ou Mme)</label>
@@ -275,5 +307,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../js/dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('.js-labo-select').select2({
+    placeholder: 'Recherche labo…',
+    allowClear: true,
+    minimumResultsForSearch: 0 // affiche toujours la recherche :contentReference[oaicite:5]{index=5}
+  });
+});
+</script>
+
 
 </html>

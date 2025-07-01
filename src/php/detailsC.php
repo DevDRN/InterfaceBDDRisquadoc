@@ -212,8 +212,8 @@ $erreurLab[] = "Aucun labo associer.";
       <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Code Correspondant</th>
-                <th scope="col">Code Labo</th>
+<!--            <th scope="col">Code Correspondant</th>
+                <th scope="col">Code Labo</th> -->                
                 <th scope="col">Titre</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
@@ -221,8 +221,8 @@ $erreurLab[] = "Aucun labo associer.";
         </thead>
         <tbody>
             <tr style="height: 52px;">
-                <td class="u-table-cell"><?= $results["CODE_CORRESP"][0] ?></td>
-                <td class="u-table-cell"><?= $results["CODE_LABO"][0] ?></td>
+<!--            <td class="u-table-cell"><?= $results["CODE_CORRESP"][0] ?></td>
+                <td class="u-table-cell"><?= $results["CODE_LABO"][0] ?></td> -->                
                 <td class="u-table-cell"><?= $results["TITRE"][0] ?></td>
                 <td class="u-table-cell"><?= $results["NOM"][0] ?></td>
                 <td class="u-table-cell"><?= $results["PRENOM"][0] ?></td>
@@ -248,7 +248,7 @@ $erreurLab[] = "Aucun labo associer.";
       <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Code Labo</th>
+                <!-- <th scope="col">Code Labo</th> -->
                 <th scope="col">Nom Labo</th>
                 <th scope="col">Code GEF</th>
                 <th scope="col">Adresse</th>
@@ -257,8 +257,8 @@ $erreurLab[] = "Aucun labo associer.";
         </thead>
         <tbody>
             <tr style="height: 52px;">
-                <td class="u-table-cell"><?= $resultsLab["CODE_LABO"][0] ?></td>
-                <td class="u-table-cell"><?= $resultsLab["NOM_LABO"][0] ?></td>
+<!--            <td class="u-table-cell"><?= $resultsLab["CODE_LABO"][0] ?></td> -->  
+                <td class="u-table-cell"><?= $resultsLab["NOM_LABO"][0] ?></td>               
                 <td class="u-table-cell"><?= $resultsLab["CODE_GEF"][0] ?></td>
                 <td class="u-table-cell"><?= $resultsLab["ADRESSE"][0] ?></td>
                 <td class="u-table-cell"><?= $resultsLab["CP"][0] ?></td>

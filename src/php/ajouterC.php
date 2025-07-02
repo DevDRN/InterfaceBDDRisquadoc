@@ -39,9 +39,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     // if ($codeCorresp === '') {
     //     $erreurs[] = 'Code Correspondant requis.';
     // }
-    // if ($codeLabo === '') {
-    //     $erreurs[] = 'Code Labo requis.';
-    // }
+    if ($codeLabo === '') {
+        $erreurs[] = 'Labo requis.';
+    }
     if ($nom === '') {
         $erreurs[] = 'Le nom est requis.';
     }

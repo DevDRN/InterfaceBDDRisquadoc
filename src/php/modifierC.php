@@ -18,6 +18,18 @@ if (!$id || !ctype_digit($id)) {
 }
 $id = (int) $id;
 
+// Recup Labo
+$sqlLab = 'SELECT CODE_LABO, NOM_LABO FROM LABOS ORDER BY NOM_LABO';
+$stidLab = oci_parse($conn, $sqlLab);
+oci_execute($stidLab);
+
+$labos = [];
+while ($row = oci_fetch_array($stidLab, OCI_ASSOC+OCI_RETURN_NULLS)) {
+    $labos[] = $row;
+}
+oci_free_statement($stidLab);
+
+
 //Traitement de suppression
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $sqlDel = "DELETE FROM CORRESPONDANTS WHERE CODE_CORRESP = :id";
@@ -40,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     //Recup et clear
     // $codeCorresp = trim($_POST['codeCorresp'] ?? '');
-    // $codeLabo = trim($_POST['codeLabo'] ?? '');
+    $codeLabo = $_POST['codeLabo'];
     $titre = trim($_POST['titre'] ?? '');
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
@@ -67,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
     if (empty($erreurs)) {
         $sqlUpd = "UPDATE CORRESPONDANTS
-                    SET TITRE = :titre,
+                    SET CODE_LABO = :codeLabo,
+                        TITRE = :titre,
                         NOM = :nom,
                         PRENOM = :prenom,
                         TEL_MOBILE_CORRESP = :telMobile,
@@ -77,8 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
         $stmtUpd = oci_parse($conn,$sqlUpd);
 
-/*         oci_bind_by_name($stmtUpd, ':codeCorresp', $codeCorresp);
-        oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo); */        oci_bind_by_name($stmtUpd, ':titre', $titre);
+        // oci_bind_by_name($stmtUpd, ':codeCorresp', $codeCorresp);
+        oci_bind_by_name($stmtUpd, ':codeLabo', $codeLabo);         
+        oci_bind_by_name($stmtUpd, ':titre', $titre);
         oci_bind_by_name($stmtUpd, ':nom', $nom);
         oci_bind_by_name($stmtUpd, ':prenom', $prenom);
         oci_bind_by_name($stmtUpd, ':telMobile', $telMobile);
@@ -111,10 +125,16 @@ if(!$row) {
     die('Correspondant introuvable');
 }
 
+$reqLab = "SELECT NOM_LABO, CODE_LABO WHERE CODE_LABO = ".$codeLabo."";
+$stidCorLab = oci_parse($conn, $reqLab);
+oci_execute($stidCorLab);
+$nrowCorLab = oci_fetch_all($stidCorLab, $resultsLab);
+
 //Si pas de POST update, init champs
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
-/*     $codeCorresp = $row['CODE_CORRESP'];
-    $codeLabo = $row['CODE_LABO']; */    $titre = $row['TITRE'];
+    // $codeCorresp = $row['CODE_CORRESP'];
+    $codeLabo = $row['CODE_LABO'];   
+    $titre = $row['TITRE'];
     $nom = $row['NOM'];
     $prenom = $row['PRENOM'];
     $telMobile = $row['TEL_MOBILE_CORRESP'];
@@ -270,11 +290,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['delete'])) {
 <!--     <div class="mb-3">
       <label for="codeCorresp" class="form-label">Code Correspondant *</label>
       <input type="text" class="form-control" id="codeCorresp" name="codeCorresp" required value="<?= htmlspecialchars($codeCorresp ?? '') ?>">
-    </div>
-        <div class="mb-3">
-      <label for="codeLabo" class="form-label">Code Labo *</label>
-      <input type="text" class="form-control" id="codeLabo" name="codeLabo" required value="<?= htmlspecialchars($codeLabo ?? '') ?>">
-    </div> -->    
+    </div> --> 
+      <div class="mb-3">
+          <label for="codeLabo" class="form-label"> Labo *</label>
+          <select id="codeLabo" name="codeLabo" class="form-select js-labo-select" required>
+              <option value="<?= htmlspecialchars($resultsLab['CODE_LABO']) ?>"><?= htmlspecialchars($resultsLab['NOM_LABO'])?></option>
+              <?php foreach ($labos as $labo): ?>
+                  <option value="<?= htmlspecialchars($labo['CODE_LABO']) ?>">
+                      <?= htmlspecialchars($labo['NOM_LABO']) ?>
+                  </option>
+              <?php endforeach; ?>
+          </select>
+      </div>
       <div class="mb-3">
       <label for="titre" class="form-label">Titre (Mr ou Mme)</label>
       <input type="text" class="form-control" id="titre" name="titre" value="<?= htmlspecialchars($titre ?? '') ?>">

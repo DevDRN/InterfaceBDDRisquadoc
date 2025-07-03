@@ -1,3 +1,64 @@
+<?php
+declare(strict_types=1);
+session_start();
+
+//Si déjà connecté redirige directement
+if (isset($_SESSION['MATRICULE'])) {
+  header('Location: dashboard.php');
+  exit;
+}
+
+//Traitement du formulaire
+$errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $username = trim($_POST['username'] ?? '');
+  $password = $_POST['password'] ?? '';
+
+  if ($username === '' || $password === '') {
+    $errors[] = 'Veuillez saisir vos identifiants.';
+  } else {
+    //Connexion
+    $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
+    if (!$conn) {
+      $e = oci_error();
+      die('Erreur de connexion à la BDD : ' .htmlspecialchars($e['message'])) ;
+    }
+
+    //Requete d'authentification
+    $sql = 'SELECT MATRICULE,USERNAME, MDP WHERE USERNAME = :username';
+    $stid = oci_parse($conn, $sql);
+    oci_bind_by_name($stid, ':username', $username);
+    oci_execute($stid);
+    $row = oci_fetch_assoc($stid);
+    oci_free_statement($stid);
+
+    if (!$row || !password_verify($password, $row['MDP'])) {
+      $errors[] ='Identifiant ou mot de passe incorrects.';
+    } elseif (!in_array($row['ROLES'], ['admin', 'membre', 'visiteur'], true)) {
+      $errors[] = "Vous n'avez pas d'autorisation";
+    } else {
+      //Authentification réussie
+      session_regenerate_id(true);
+      $_SESSION['MATRICULE']  = $row['MATRICULE'];
+      $_SESSION['USERNAME'] = $username;
+      $_SESSION['ROLES'] = $row['ROLES'];
+
+      //Redirection selon rôle, pas actif pour le moment
+      switch ($row['ROLES']) {
+        case 'admin':
+          header ('Location: dashboard.php');
+          break;
+        case 'membre':
+          header ('Location: dashboard.php');
+          break;
+        default:
+          header ('Location: dashboard.php');
+      }
+      exit;
+    }
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 

@@ -4,7 +4,7 @@ session_start();
 
 //Si déjà connecté redirige directement
 if (isset($_SESSION['MATRICULE'])) {
-  header('Location: src/php/dashboard.php');
+  header('Location: src\php\dashboard.php');
   exit;
 }
 
@@ -46,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       //Redirection selon rôle, pas actif pour le moment
       switch ($row['ROLES']) {
         case 'admin':
-          header ('Location: src/php/dashboard.php');
+          header ('Location: src\php\dashboard.php');
           break;
         case 'membre':
-          header ('Location: src/php/dashboard.php');
+          header ('Location: src\php\dashboard.php');
           break;
         default:
-          header ('Location: src/php/dashboard.php');
+          header ('Location: src\php\dashboard.php');
       }
       exit;
     }

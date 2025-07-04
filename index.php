@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //Requete d'authentification
-    $sql = 'SELECT MATRICULE,USERNAME, MDP, ROLES FROM USERS WHERE USERNAME = :username';
+    $sql = 'SELECT * FROM USERS WHERE USERNAME = :username';
     $stid = oci_parse($conn, $sql);
     oci_bind_by_name($stid, ':username', $username);
     oci_execute($stid);
@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['MATRICULE']  = $row['MATRICULE'];
       $_SESSION['USERNAME'] = $username;
       $_SESSION['ROLES'] = $row['ROLES'];
+      
 
       //Redirection selon rôle, pas actif pour le moment
       switch ($row['ROLES']) {

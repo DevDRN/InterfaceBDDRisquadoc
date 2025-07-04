@@ -1,3 +1,7 @@
+<?php
+
+require 'init.php'
+?>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 
@@ -46,7 +50,7 @@
   </div> 
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
     <li>>Interface Labo Correspondant</a></li> 
-    <li>Bonjour, <?= htmlspecialchars($_SESSION['username']) ?></li>
+    <li>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></li>
   </ul> <div class="col-md-3 text-end"> 
     <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a> 
     <a href="logout.php" class="btn btn-secondary">Deconnexion ?</a> 

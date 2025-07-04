@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //Requete d'authentification
-    $sql = 'SELECT MATRICULE,USERNAME, MDP FROM USERS WHERE USERNAME = :username';
+    $sql = 'SELECT MATRICULE,USERNAME, MDP, ROLES FROM USERS WHERE USERNAME = :username';
     $stid = oci_parse($conn, $sql);
     oci_bind_by_name($stid, ':username', $username);
     oci_execute($stid);
@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   
       <div class="form-floating">
         <input type="text" class="form-control" name="username" id="username" placeholder="prenom.nom" required autofocus>
-        <label for="username" class="form-floating">Nom d'utilisateur</label>
+        <label for="username" class="form-label">Nom d'utilisateur</label>
       </div>
       <div class="form-floating">
         <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>

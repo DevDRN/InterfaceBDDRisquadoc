@@ -4,7 +4,7 @@ session_start();
 
 //Si déjà connecté redirige directement
 if (isset($_SESSION['MATRICULE'])) {
-  header('Location: dashboard.php');
+  header('Location: src/php/dashboard.php');
   exit;
 }
 
@@ -46,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       //Redirection selon rôle, pas actif pour le moment
       switch ($row['ROLES']) {
         case 'admin':
-          header ('Location: dashboard.php');
+          header ('Location: src/php/dashboard.php');
           break;
         case 'membre':
-          header ('Location: dashboard.php');
+          header ('Location: src/php/dashboard.php');
           break;
         default:
-          header ('Location: dashboard.php');
+          header ('Location: src/php/dashboard.php');
       }
       exit;
     }
@@ -109,6 +109,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
       </nav>
   </header> -->
+  <header>
+    <?php if ($errors): ?>
+      <div class="alert alert-danger">
+        <ul><?php foreach ($errors as $e) 
+          echo '<li>'. htmlspecialchars($e) .'</li>'; ?>
+        </ul>
+      </div>
+    <?php endif; ?>
+  </header>
   
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
       <!-- <svg class="d-none">
@@ -164,13 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </ul>
       </div> -->
       
-    <?php if ($errors): ?>
-      <div class="alert alert-danger">
-        <ul><?php foreach ($errors as $e) 
-          echo '<li>'. htmlspecialchars($e) .'</li>'; ?>
-        </ul>
-      </div>
-    <?php endif; ?>
       
   <main class="form-signin w-100 m-auto">
     <form method="POST" novalidate>

@@ -49,7 +49,7 @@ require 'init.php'
     </a> 
   </div> 
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
-    <li>>Interface Labo Correspondant</a></li> 
+    <li><h2><strong>Interface Labo Correspondant</strong></h2><br /></li> 
     <li>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></li>
   </ul> <div class="col-md-3 text-end"> 
     <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a> 

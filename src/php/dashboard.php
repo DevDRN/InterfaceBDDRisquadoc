@@ -1,6 +1,6 @@
 <?php
 
-require 'init.php'
+require 'init.php';
 ?>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
@@ -52,7 +52,7 @@ require 'init.php'
     <li><h2><strong>Interface Labo Correspondant</strong></h2><br /></li> 
   </ul> 
   <div class="col-md-3 text-end"> 
-    <p>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></p>
+    <span>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></span>
     <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a> 
     <a href="logout.php" class="btn btn-secondary">Deconnexion ?</a> 
   </div> 
@@ -183,26 +183,26 @@ require 'init.php'
 
   <div class="b-example-divider"></div>
 
-  <div id="search-div" class="row text-center">
+  <!-- <div id="search-div" class="row text-center">
     <div class="subtitle">
       <form action="" method="POST">
         <div class="search">
-          <input id="code_labo" type="text" placeholder="Code Labo">
+          <input id="nomLabo" name="nomLabo" type="text" onkeydown="searchtcc()" placeholder="Laboratoire">
         </div>
         <div class="search">
           <button type="button" class="btn btn-outline-light" disabled>ET/OU</button>
         </div>
         <div class="search">
-          <input id="code_correspondant" type="text" placeholder="Code Postal">
+          <input id="codePostal" type="text" placeholder="Code Postal">
         </div>
         <div class="search">
-          <a class="btn" id="btnSearch" onclick="" href=""><i class="fa-solid fa-magnifying-glass"></i></a>
+          <a class="btn" id="btnSearch" onclick="searchtcc()" href=""><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="b-example-divider"></div>
+  <div class="b-example-divider"></div> -->
 
   <div id="main-div" class="container text-center">
 
@@ -281,27 +281,37 @@ require 'init.php'
 
     function searchtcc() {
 
-      var codeLabo = document.getElementById('code_labo').value;
-      var codeCorrespondant = document.getElementById('code_correspondant').value;
-      localStorage.setItem("cLabo", codeLabo);
-      localStorage.setItem("cCorresp", codeCorrespondant);
+      var nomLabo = document.getElementById('nomLabo').value;
+      var codePostal = document.getElementById('codePostal').value;
+      localStorage.setItem("nomLabo", codeLabo);
+      localStorage.setItem("codePostal", codePostal);
 
-      $.ajax({
-        type: "POST",
-        url: "tableCorrespondant.php",
-        data: {
-          call: "searchCorresp",
-          code_labo: codeLabo,
-        },
-        dataType: 'TEXT',
-        success: function(response) {
-          $('#main-div').html(reponse);
-          console.log(response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert(jqXHR.responseText);
-        }
-      })
+        $.ajax({
+          type: "POST",
+          url: "tableLabo.php",
+          data: {
+            call: "searchLab",
+            nom_labo: nomLabo,
+            code_postal: codePostal,
+          },
+          dataType: 'TEXT',
+          success: function (response) {
+            if (response == "NOK") {
+              Swal.fire({
+                icon: 'error',
+                title: 'Manque d\'information',
+                text: 'Veuillez renseigner le nom du laboratoire ou un code postal.',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+              })
+              } else {
+              $('#main-div').html(response);
+              }
+            }
+        });
     };
 
     /* function details(){

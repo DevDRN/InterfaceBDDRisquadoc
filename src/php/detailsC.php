@@ -27,6 +27,8 @@
     
 } */
 declare(strict_types=1);
+require 'init.php';
+
 header('Content-Type: text/html; charset=UTF-8');
 
 if(!isset($_GET['id']) || !ctype_digit($_GET['id'])) {

@@ -9,5 +9,5 @@
         setcookie(session_name(), '', time() - 42000, $p["path"], $p["domain"], $p["secure"], $p["httponly"]);
     }
     session_destroy();
-    header('Location: index.php');
+    header('Location: ../../index.php');
     exit;

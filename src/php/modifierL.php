@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+require 'init.php';
 
 $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
 

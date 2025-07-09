@@ -8,14 +8,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 require_once __DIR__ . '/../../vendor/autoload.php';
+require 'init.php';
 
 //Accès restreint
-/* session_start();
-if ($_SESSION['role'] !== 'admin') {
+
+if ($_SESSION['ROLES'] !== 'admin') {
     http_response_code(403);
     exit('Accès interdit');
 }
- */
+
 $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
 
 if (!$conn) {

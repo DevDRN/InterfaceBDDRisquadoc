@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors[] = 'Veuillez saisir vos identifiants.';
   } else {
     //Connexion
-    $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
+    $conn = oci_connect('pstest', 'ennov', '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = rac5.chrul.net)(PORT = 1521))'.'(CONNECT_DATA = (SERVICE_NAME = TRA_ENNOV_01_R)))');
     if (!$conn) {
       $e = oci_error();
       die('Erreur de connexion à la BDD : ' .htmlspecialchars($e['message'])) ;

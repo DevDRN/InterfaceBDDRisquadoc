@@ -1,5 +1,5 @@
 <?php
- function connect () {
+
 
  $name = "pstest";
  $mdp ="ennov";
@@ -13,4 +13,3 @@ if (!$conn) {
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 
-}

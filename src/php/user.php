@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 require_once __DIR__ . '/../../vendor/autoload.php';
 require 'init.php';
-require_once __DIR__ . 'connexion.php';
+require_once __DIR__ . '\connexion.php';
 
 //Accès restreint
 

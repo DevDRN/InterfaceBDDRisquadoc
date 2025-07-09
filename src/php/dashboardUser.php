@@ -1,12 +1,18 @@
 <?php
 
 require "init.php";
+require_once __DIR__ . '\connexion.php';
 
 if (!isset($_SESSION['MATRICULE'])) {
     header('Location: ../../index.php');
     exit;
 }
-require "connexion.php";
+//Connexion
+try {
+    $conn = connect();
+} catch (RuntimeException $e) {
+    die(htmlspecialchars($e->getMessage()));
+}
 
 $matricule = $_SESSION['MATRICULE'];
 $errors = [];

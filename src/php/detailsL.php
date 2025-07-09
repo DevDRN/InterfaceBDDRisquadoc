@@ -3,7 +3,7 @@
 declare(strict_types=1);
 header('Content-Type: text/html; charset=UTF-8');
 require 'init.php';
-require_once __DIR__ . 'connexion.php';
+require_once __DIR__ . '\connexion.php';
 
 if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
     if (!headers_sent()) {

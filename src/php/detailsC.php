@@ -28,6 +28,7 @@
 } */
 declare(strict_types=1);
 require 'init.php';
+require_once __DIR__ . 'connexion.php';
 
 header('Content-Type: text/html; charset=UTF-8');
 
@@ -42,11 +43,11 @@ if(!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
 $id=(int)$_GET['id'];
 
 
-$conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
-
-if (!$conn) {
-    $e = oci_error();
-    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+//Connexion
+try {
+    $conn = connect();
+} catch (RuntimeException $e) {
+    die(htmlspecialchars($e->getMessage()));
 }
 $req = "select * from CORRESPONDANTS where code_corresp = ".$id."" ;
 

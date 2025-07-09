@@ -1,5 +1,5 @@
 <?php
- function connect(): OCI_Connexion {
+ function connect() {
 
  $name = "pstest";
  $mdp ="ennov";

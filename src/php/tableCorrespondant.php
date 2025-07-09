@@ -1,5 +1,5 @@
 <?php
-require 'connexion.php';
+require_once __DIR__ . 'connexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $function = $_POST["call"];
@@ -11,15 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
-function tableCorrespondantShow()
-{
-    // connect();
-    $conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
+function tableCorrespondantShow() {
 
-    if (!$conn) {
-         $e = oci_error();
-         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-     }
+    //Connexion
+    try {
+        $conn = connect();
+    } catch (RuntimeException $e) {
+        die(htmlspecialchars($e->getMessage()));
+    }
+
     $req = "select * from CORRESPONDANTS"; //labos where ville = 'LOOS'
 
     $stid = oci_parse($conn, $req);

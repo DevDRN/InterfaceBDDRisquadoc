@@ -1,14 +1,16 @@
 <?php
 declare(strict_types=1);
 require 'init.php';
+require_once __DIR__ . 'connexion.php';
+
 $erreurs = [];
 $success = false;
 
-$conn = oci_connect('pstest', 'ennov', 'TRA_ENNOV_01_R', 'utf8');
-
-if (!$conn) {
-    $e = oci_error();
-    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+//Connexion
+try {
+    $conn = connect();
+} catch (RuntimeException $e) {
+    die(htmlspecialchars($e->getMessage()));
 }
 
 

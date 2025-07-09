@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 session_start();
-require 'src/php/connexion.php';
+require_once __DIR__ . '/src/php/connexion.php';
 
 //Si déjà connecté redirige directement
 if (isset($_SESSION['MATRICULE'])) {
@@ -19,7 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors[] = 'Veuillez saisir vos identifiants.';
   } else {
     //Connexion
-    connect();
+    try {
+      $conn = connect();
+    } catch (RuntimeException $e) {
+      die(htmlspecialchars($e->getMessage()));
+    }
 
     //Requete d'authentification
     $sql = 'SELECT * FROM USERS WHERE USERNAME = :username';
@@ -28,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     oci_execute($stid);
     $row = oci_fetch_assoc($stid);
     oci_free_statement($stid);
+    oci_close($conn);
+
 
     if (!$row || !password_verify($password, $row['MDP'])) {
       $errors[] ='Identifiant ou mot de passe incorrects.';

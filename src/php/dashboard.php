@@ -44,7 +44,7 @@ require 'init.php';
   <div class="col-md-3 mb-2 mb-md-0"> 
     <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none"> 
       <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
-        <use xlink:href="../img/R9AWgX01.svg"></use>
+        <use xlink:href="../img/GIL_icon.ico"></use>
       </svg> 
     </a> 
   </div> 

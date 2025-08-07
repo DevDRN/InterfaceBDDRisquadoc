@@ -49,7 +49,7 @@ require 'init.php';
     </a> 
   </div> 
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
-    <li><h2><strong>Interface Labo Correspondant</strong></h2><br /></li> 
+    <li><h2><strong>~GIL~</strong></h2><br /></li> 
   </ul> 
   <div class="col-md-3 text-end"> 
     <span>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></span>

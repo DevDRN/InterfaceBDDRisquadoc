@@ -6,7 +6,9 @@ const annee = today.getFullYear();
 const dateFormat = `${jour}/${mois}/${annee}`;
 
 
-document.getElementById('dateMaj').value = dateFormat;
+function setDateMaj() {
+    document.getElementById('dateMaj').value = dateFormat;
+}
 
 //automatisation de l'username
 function setUsername() {

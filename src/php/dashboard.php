@@ -164,7 +164,7 @@ require 'init.php';
         </ul>
       </div>
       <div class="btn-group col">
-        <a type="button" class="btn btn-outline-light space"  href="user.php">Gestion utilisateurs</a>
+        <a type="button" class="btn btn-outline-info space"  href="user.php">Gestion utilisateurs</a>
       </div>
       <!-- <ul class="nav nav-pills">
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Table Labo</a></li>

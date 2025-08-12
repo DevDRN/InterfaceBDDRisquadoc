@@ -104,7 +104,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($ok && intval($checkrows['CNT'] === '0')) {
                 $message[] = "Utilisateur ajoutée.";
 
-                $subject = "Bienvenue, votre compte a été créé.";
+                $subject = "GIL - Bienvenue, votre compte a été créé.";
                 $body = "Bonjour $prenom,\r\n\r\n Votre compte a été créé.\r\nLogin: $username \r\nMot de passe temporaire: Chang3M3! \r\nMerci de le modifier.\r\n http://10.49.22.125/";
                 if (!sendWelcomeEmail($email,$nom,$prenom,$username,$subject,$body)) {
                     $error[] = "Échec de l'envoi de mail";

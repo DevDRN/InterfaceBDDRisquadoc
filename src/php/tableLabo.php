@@ -2,31 +2,31 @@
 require_once __DIR__ . '\connexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $function = $_POST["call"];
+  $function = $_POST["call"];
 
-    if (function_exists($function)) {
-        call_user_func($function);
-    } else {
-        echo 'Function Not Exists!!';
-    }
+  if (function_exists($function)) {
+    call_user_func($function);
+  } else {
+    echo 'Function Not Exists!!';
+  }
 }
 
 function tableLaboShow()
 {
-    //Connexion
-    try {
-        $conn = connect();
-    } catch (RuntimeException $e) {
-        die(htmlspecialchars($e->getMessage()));
-    }
+  //Connexion
+  try {
+    $conn = connect();
+  } catch (RuntimeException $e) {
+    die(htmlspecialchars($e->getMessage()));
+  }
 
-    $req = "select * from LABOS"; //labos where ville = 'LOOS'
+  $req = "select * from LABOS"; //labos where ville = 'LOOS'
 
-    $stid = oci_parse($conn, $req);
-    oci_execute($stid);
-    $nrows = oci_fetch_all($stid, $results);
+  $stid = oci_parse($conn, $req);
+  oci_execute($stid);
+  $nrows = oci_fetch_all($stid, $results);
 
-    echo '<div class="row align-items-start">
+  echo '<div class="row align-items-start">
       <table class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
@@ -37,33 +37,34 @@ function tableLaboShow()
           </tr>
         </thead>
         <tbody>';
-            //<th scope="col">Code Labo</th>
+  //<th scope="col">Code Labo</th>
 
-    if ($nrows > 0 ) {
+  if ($nrows > 0) {
 
-        for ($i=0; $i < $nrows; $i++){
+    for ($i = 0; $i < $nrows; $i++) {
 
-          echo '<tr style="height: 52px;">
-            <td class="u-table-cell">'.$results["NOM_LABO"][$i].'</td>
-            <td class="u-table-cell">'.$results["VILLE"][$i].'</td>
-            <td class="u-table-cell">'.$results["CP"][$i].'</td>
-            <td class="u-table-cell">'.$results["PAYS"][$i].'</td>
-            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]),'"> Details </a></td>
+      echo '<tr style="height: 52px;">
+            <td class="u-table-cell">' . $results["NOM_LABO"][$i] . '</td>
+            <td class="u-table-cell">' . $results["VILLE"][$i] . '</td>
+            <td class="u-table-cell">' . $results["CP"][$i] . '</td>
+            <td class="u-table-cell">' . $results["PAYS"][$i] . '</td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-info space" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]), '"> Details </a></td>
           </tr>';
-            //<td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
-        }
+      //<td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
     }
-    echo ' </tbody>
+  }
+  echo ' </tbody>
       </table>
     </div>';
 
-    oci_free_statement($stid);
-    oci_close($conn);
+  oci_free_statement($stid);
+  oci_close($conn);
 }
 
-function searchLab($nomLabo) {
+function searchLab($nomLabo)
+{
   require "connexion.php";
-  $sql= "SELECT * FROM LABOS WHERE NOM_LABO = '".$nomLabo."'";
+  $sql = "SELECT * FROM LABOS WHERE NOM_LABO = '" . $nomLabo . "'";
   $stid = oci_parse($conn, $sql);
   oci_execute($stid);
   $nrow = oci_fetch_assoc($stid, $result);
@@ -79,26 +80,25 @@ function searchLab($nomLabo) {
           </tr>
         </thead>
         <tbody>';
-  
-      if ($nrows > 0 ) {
 
-        for ($i=0; $i < $nrows; $i++){
+  if ($nrows > 0) {
 
-          echo '<tr style="height: 52px;">
-            <td class="u-table-cell">'.$results["NOM_LABO"][$i].'</td>
-            <td class="u-table-cell">'.$results["VILLE"][$i].'</td>
-            <td class="u-table-cell">'.$results["CP"][$i].'</td>
-            <td class="u-table-cell">'.$results["PAYS"][$i].'</td>
-            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]),'"> Details </a></td>
+    for ($i = 0; $i < $nrows; $i++) {
+
+      echo '<tr style="height: 52px;">
+            <td class="u-table-cell">' . $results["NOM_LABO"][$i] . '</td>
+            <td class="u-table-cell">' . $results["VILLE"][$i] . '</td>
+            <td class="u-table-cell">' . $results["CP"][$i] . '</td>
+            <td class="u-table-cell">' . $results["PAYS"][$i] . '</td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-info" href="detailsL.php?id=', urlencode($results["CODE_LABO"][$i]), '"> Details </a></td>
           </tr>';
-            //<td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
-        }
+      //<td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>
     }
-    echo ' </tbody>
+  }
+  echo ' </tbody>
       </table>
     </div>';
 
-    oci_free_statement($stid);
-    oci_close($conn);
-
+  oci_free_statement($stid);
+  oci_close($conn);
 }

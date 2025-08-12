@@ -49,7 +49,7 @@ function tableCorrespondantShow() {
             <td id="titre" class="u-table-cell">'.$results["TITRE"][$i].'</td>
             <td class="u-table-cell">'.$results["NOM"][$i].'</td>
             <td class="u-table-cell">'.$results["PRENOM"][$i].'</td>
-            <td class="u-table-cell"><a type="button" class="btn btn-outline-light space" href="detailsC.php?id=', urlencode($results["CODE_CORRESP"][$i]),'"> Details </a></td>
+            <td class="u-table-cell"><a type="button" class="btn btn-outline-info space" href="detailsC.php?id=', urlencode($results["CODE_CORRESP"][$i]),'"> Details </a></td>
           </tr>';
 /*             <td class="u-table-cell">'.$results["CODE_CORRESP"][$i].'</td>
             <td class="u-table-cell">'.$results["CODE_LABO"][$i].'</td>

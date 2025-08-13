@@ -1,9 +1,32 @@
 <?php
-
+require_once __DIR__ . '\connexion.php';
 require 'init.php';
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+  $function = $_POST["call"];
+
+  if (function_exists($function)) {
+    call_user_func($function);
+  } else {
+    echo 'Function Not Exists!!';
+  }
+}
+
+try {
+  $conn = connect();
+} catch (RuntimeException $e) {
+  die(htmlspecialchars($e->getMessage()));
+}
+
+$req = "select * from LABOS"; //labos where ville = 'LOOS'
+
+$stid = oci_parse($conn, $req);
+oci_execute($stid);
+$nrows = oci_fetch_all($stid, $results);
+
 ?>
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="dark">
 
 <head>
   <script src="../js/color-modes.js"></script>
@@ -13,7 +36,7 @@ require 'init.php';
   <meta name="description" content="">
   <meta name="author" content="DevClownJP">
   <meta name="generator" content="Hugo 0.118.2">
-  <title>InterfaceBDDRisquadoc</title>
+  <title>~GIL~</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -40,23 +63,25 @@ require 'init.php';
 </head>
 
 
-<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"> 
-  <div class="col-md-3 mb-2 mb-md-0"> 
-    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none"> 
-      <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
-        <use xlink:href="../img/GIL_icon.svg"></use>
-      </svg> 
-    </a> 
-  </div> 
-  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
-    <li><h2><strong>~GIL~</strong></h2><br /></li> 
-  </ul> 
-  <div class="col-md-3 text-end"> 
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+  <div class="col-md-3 mb-2 mb-md-0">
+    <a href="dashboard.php" class="d-inline-flex link-body-emphasis text-decoration-none" title="Retour au menu">
+      <svg class="bi" width="40" height="32" role="img" aria-label="GIL">
+        <use xlink:href="../img/GIL.png"></use>
+      </svg>
+    </a>
+  </div>
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li>
+      <h2><strong>~GIL~</strong></h2><br />
+    </li>
+  </ul>
+  <div class="col-md-3 text-end">
     <span>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></span>
-    <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a> 
-    <a href="logout.php" class="btn btn-secondary">Deconnexion ?</a> 
-  </div> 
-</header> 
+    <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a>
+    <a href="logout.php" class="btn btn-secondary">Deconnexion ?</a>
+  </div>
+</header>
 
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -164,7 +189,7 @@ require 'init.php';
         </ul>
       </div>
       <div class="btn-group col">
-        <a type="button" class="btn btn-outline-info space"  href="user.php">Gestion utilisateurs</a>
+        <a type="button" class="btn btn-outline-info space" href="user.php">Gestion utilisateurs</a>
       </div>
       <!-- <ul class="nav nav-pills">
         <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Table Labo</a></li>
@@ -174,7 +199,7 @@ require 'init.php';
     </header>
   </div>
 
-    <!-- Module de recherche -->
+  <!-- Module de recherche -->
   <div class="b-example-divider"></div>
 
   <div class="container text-center">
@@ -205,27 +230,37 @@ require 'init.php';
   <div class="b-example-divider"></div> -->
 
   <div id="main-div" class="container text-center">
-
     <div class="row align-items-start">
       <table class="table table-striped mb-0">
         <thead>
           <tr class="sticky">
-            <th scope="col">Code Correspondant</th>
-            <th scope="col">Code Labo</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Prénom</th>
+            <th scope="col">Nom du Labo</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Code Postal</th>
+            <th scope="col">Pays</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="height: 52px;">
-            <td class="u-table-cell">65</td>
-            <td class="u-table-cell">84</td>
-            <td class="u-table-cell">HESSNER</td>
-            <td class="u-table-cell">Thomas</td>
-          </tr>
+          <?php if ($nrows > 0): ?>
+
+            <?php for ($i = 0; $i < $nrows; $i++): ?>
+              <tr style="height: 52px;">
+                <td class="u-table-cell"><?php echo $results["NOM_LABO"][$i] ?></td>
+                <td class="u-table-cell"><?php echo $results["VILLE"][$i] ?></td>
+                <td class="u-table-cell"><?php echo $results["CP"][$i] ?></td>
+                <td class="u-table-cell"><?php echo $results["PAYS"][$i] ?></td>
+                <td class="u-table-cell"><a type="button" class="btn btn-outline-info space" href="detailsL.php?id=<?php echo urlencode($results["CODE_LABO"][$i]) ?>"> Details </a></td>
+              </tr>
+            <?php endfor; ?>
+            <?php else: ?>
+              <tr>
+                  <td colspan="5">Aucun laboratoire trouvé</td>
+              </tr>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>
+
   </div>
 
   <section>
@@ -242,7 +277,24 @@ require 'init.php';
   <script src="../../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 
   <script type="text/javascript">
-  
+    /*     $(document).ready(function () {
+      $.ajax({
+        url: "tableLabo.php",
+        type: "GET",
+        data: {
+          call: "tableLaboShow"
+        },
+        datatype:"TEXT",
+        success: function(response) {
+          $('#main-div').html(response);
+          console.log(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert(jqXHR.responseText);
+        }      
+      })
+    });
+ */
     function tcc() {
       $.ajax({
         type: "POST",
@@ -286,32 +338,32 @@ require 'init.php';
       localStorage.setItem("nomLabo", codeLabo);
       localStorage.setItem("codePostal", codePostal);
 
-        $.ajax({
-          type: "POST",
-          url: "tableLabo.php",
-          data: {
-            call: "searchLab",
-            nom_labo: nomLabo,
-            code_postal: codePostal,
-          },
-          dataType: 'TEXT',
-          success: function (response) {
-            if (response == "NOK") {
-              Swal.fire({
-                icon: 'error',
-                title: 'Manque d\'information',
-                text: 'Veuillez renseigner le nom du laboratoire ou un code postal.',
-                confirmButtonText: 'Ok'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-              })
-              } else {
-              $('#main-div').html(response);
+      $.ajax({
+        type: "POST",
+        url: "tableLabo.php",
+        data: {
+          call: "searchLab",
+          nom_labo: nomLabo,
+          code_postal: codePostal,
+        },
+        dataType: 'TEXT',
+        success: function(response) {
+          if (response == "NOK") {
+            Swal.fire({
+              icon: 'error',
+              title: 'Manque d\'information',
+              text: 'Veuillez renseigner le nom du laboratoire ou un code postal.',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
               }
-            }
-        });
+            })
+          } else {
+            $('#main-div').html(response);
+          }
+        }
+      });
     };
 
     /* function details(){
@@ -330,7 +382,6 @@ require 'init.php';
           confirmButtonText: "Ok"
         });
       }; */
-
   </script>
   <script src="../js/main.js"></script>
 </body>

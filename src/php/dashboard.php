@@ -78,7 +78,7 @@ $nrows = oci_fetch_all($stid, $results);
   </ul>
   <div class="col-md-3 text-end">
     <span>Bonjour, <strong><?= htmlspecialchars($username) ?></strong></span>
-    <a href="dasboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a>
+    <a href="dashboardUser.php" class="btn btn-outline-primary me-2">Mon compte</a>
     <a href="logout.php" class="btn btn-secondary">Deconnexion ?</a>
   </div>
 </header>

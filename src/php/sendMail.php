@@ -55,3 +55,32 @@ function sendWelcomeEmail(string $email, string $nom, string $prenom, string $us
     file_put_contents(__DIR__.'/mail.log', "Succès\n", FILE_APPEND);
 }
 }
+
+function sendReinitPassword(string $email, string $nom, string $prenom, string $username, string $subject, string $body): bool {
+      $mail= new PHPMailer(true);
+    $headers = "From: noreply@looklab.com\r\n";
+    try {
+      $mail->isSMTP();
+      $mail->Host       = 'smtp.office365.com';
+      $mail->SMTPAuth   = true;
+      $mail->Username   = 'svc_power365@chu-lille.fr';
+      $mail->Password   = '7qNbmYQ7kDCuzfnsNF$UxHabe9Bpv*';
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail->Port       = 587;
+      $mail->CharSet    = 'UTF-8';
+      $mail->Encoding   = 'base64';
+
+      $mail->setFrom('svc_power365@chu-lille.fr', 'GIL');
+      //$mail->Sender = 'svc_power365@chu-lille.fr';
+      $mail->addAddress($email, $prenom);
+      $mail->isHTML(true);
+      $mail->Subject  = $subject;
+      $mail->Body     = nl2br($body);
+      $mail->AltBody  = $body;
+
+      return $mail->send();
+    } catch (Exception $e) {
+      error_log('PHPMailer Error: ' . $mail->ErrorInfo);
+      return false;
+    }
+}

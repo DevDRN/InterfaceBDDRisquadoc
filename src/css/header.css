@@ -13,3 +13,8 @@
   .dropdown-toggle:not(:focus) {
     outline: 0;
   }
+  
+  .logo {
+    max-width: 100%;
+    height: auto;
+  }

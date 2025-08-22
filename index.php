@@ -200,6 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </label>
       </div>
       <button class="btn btn-primary w-100 py-2" type="submit">Se connecter</button>
+      <a href="src/php/forgot_password.php" class="btn btn-link">Mot de passe oublié ?</a>
       <p class="mt-5 mb-3 text-body-secondary">&copy; v0.5 - 2025</p>
     </form>
   </main>
